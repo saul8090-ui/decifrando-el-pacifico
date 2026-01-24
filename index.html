@@ -8,64 +8,73 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Pirata+One&display=swap" rel="stylesheet">
 
-    <style>
-       .btn-bitacora-flotante {
-    position: fixed !important;
-    top: 20px;
-    right: 20px;
-    background-color: #5dade2 !important; /* Azul claro */
-    color: white !important;
-    padding: 12px 22px;
-    border-radius: 30px;
-    border: 2px solid white;
-    font-family: 'Pirata One', cursive;
-    font-size: 1.1rem;
-    z-index: 999999; 
-    display: none; /* Se activa tras la contraseña */
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-}
-
-    .modal-personalizado {
-        display: none;
-        position: fixed;
-        z-index: 1000000;
-        left: 0; top: 0; width: 100%; height: 100%;
-        background-color: rgba(0,0,0,0.8);
+<style>
+    /* 1. VARIABLES Y BASES */
+    :root { 
+        --azul-p: #1b2631; 
+        --pergamino: #fdf5e6; 
+        --oro: #b2945d; 
+        --tinta: #1a1a1a; 
+        --verde-sello: #1e8449;
     }
 
-    .modal-contenido {
-        background: #fdf5e6; /* Color pergamino */
-        margin: 10% auto;
-        padding: 20px;
-        border: 3px solid #b2945d;
-        width: 85%;
-        max-height: 70vh;
-        overflow-y: auto;
-        border-radius: 15px;
-        position: relative;
+    body, html { 
+        margin: 0; padding: 0; 
+        height: 100%; width: 100%; 
+        font-family: 'IM Fell DW Pica', serif; 
+        background: var(--azul-p); 
+        overflow: hidden; 
     }
 
-    .cerrar-modal {
-        position: absolute;
-        right: 15px; top: 10px;
-        font-size: 35px; color: #78281f; cursor: pointer;
+    /* 2. MENÚ DE ROLES (Estilo Borrador con Radial Gradient) */
+    #menu-roles { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 12px; 
+        padding: 25px; 
+        height: 100vh; 
+        box-sizing: border-box; 
+        justify-content: center; 
+        background: radial-gradient(circle, #2e4053, #1b2631); 
+        position: absolute; 
+        width: 100%; 
+        z-index: 3000; 
     }
-    :root { --azul-p: #1b2631; --pergamino: #fdf5e6; --oro: #b2945d; --tinta: #1a1a1a; }
-    body, html { margin: 0; padding: 0; height: 100%; width: 100%; font-family: 'IM Fell DW Pica', serif; background: var(--azul-p); overflow: hidden; }
 
-    /* --- MENÚ DE ROLES --- */
-    #menu-roles { display: flex; flex-direction: column; gap: 12px; padding: 25px; height: 100vh; box-sizing: border-box; justify-content: center; background: radial-gradient(circle, #2e4053, #1b2631); position: absolute; width: 100%; z-index: 3000; }
-    .tarjeta-rol { background: var(--pergamino); border: 4px double var(--oro); padding: 15px; text-align: center; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); cursor: pointer; }
-    .tarjeta-rol h2 { font-family: 'Pirata One', cursive; margin: 0; color: var(--azul-p); font-size: 1.8rem; }
+    .tarjeta-rol { 
+        background: var(--pergamino); 
+        border: 4px double var(--oro); 
+        padding: 15px; 
+        text-align: center; 
+        border-radius: 12px; 
+        box-shadow: 0 8px 20px rgba(0,0,0,0.5); 
+        cursor: pointer; 
+        transition: transform 0.2s;
+    }
 
-    /* --- MAPA --- */
-    #map { height: 100vh; width: 100%; position: absolute; top: 0; z-index: 1; background: #aad3df; }
+    .tarjeta-rol:hover { transform: scale(1.02); }
 
-    /* --- PANEL UX (ELEVADO PARA EVITAR MARCA DE AGUA) --- */
+    .tarjeta-rol h2 { 
+        font-family: 'Pirata One', cursive; 
+        margin: 0; 
+        color: var(--azul-p); 
+        font-size: 1.8rem; 
+    }
+
+    /* 3. MAPA */
+    #map { 
+        height: 100vh; 
+        width: 100%; 
+        position: absolute; 
+        top: 0; 
+        z-index: 1; 
+        background: #aad3df; 
+    }
+
+    /* 4. PANEL DE DATOS (Elevado para proteger Marca de Agua) */
     #panel-datos { 
         position: absolute; 
-        bottom: 90px; /* 👈 Elevado para saltar el logo del host */
+        bottom: 90px; 
         width: 94%; 
         left: 3%; 
         height: 48vh; 
@@ -80,110 +89,107 @@
 
     .contenido-scroll { padding: 0 20px 20px 20px; overflow-y: auto; flex-grow: 1; }
 
-    /* --- BOTONES DE LA BITÁCORA (RECUPERANDO FORMATO) --- */
+    /* 5. ELEMENTOS DE BITÁCORA */
     .bitacora { margin-top: 20px; border-top: 2px dashed var(--oro); padding-top: 15px; }
     
-    .input-estilo { width: 100%; padding: 12px; margin: 8px 0; border: 1.5px solid var(--oro); border-radius: 8px; box-sizing: border-box; font-family: inherit; }
+    .input-estilo { 
+        width: 100%; padding: 12px; margin: 8px 0; 
+        border: 1.5px solid var(--oro); border-radius: 8px; 
+        box-sizing: border-box; font-family: inherit; 
+    }
 
-    /* Botón Adjuntar (📷 / 🎙️) */
     .btn-file { 
-        background: #546e7a; 
-        color: white; 
-        width: 100%; 
-        padding: 15px; 
-        border: none; 
-        border-radius: 10px; 
-        font-family: 'Pirata One'; 
-        font-size: 1.2rem;
-        margin-bottom: 10px; 
-        cursor: pointer; 
-        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        background: #546e7a; color: white; width: 100%; padding: 15px; 
+        border: none; border-radius: 10px; font-family: 'Pirata One'; 
+        font-size: 1.2rem; margin-bottom: 10px; cursor: pointer; 
     }
 
-    /* Botón Sellar (Verde y Vistoso) */
     .btn-enviar { 
-        background: #1e8449; 
-        color: white; 
-        border: none; 
-        width: 100%; 
-        padding: 18px; 
-        border-radius: 12px; 
-        font-family: 'Pirata One'; 
-        font-size: 1.4rem; 
-        font-weight: bold;
+        background: var(--verde-sello); color: white; border: none; 
+        width: 100%; padding: 18px; border-radius: 12px; 
+        font-family: 'Pirata One'; font-size: 1.4rem; cursor: pointer;
         box-shadow: 0 4px 12px rgba(30, 132, 73, 0.4);
-        cursor: pointer;
     }
 
-    /* Botón Siguiente Sala (Dorado) */
     .btn-accion { 
-        background: var(--azul-p); 
-        color: white; 
-        width: 100%; 
-        padding: 15px; 
-        border: none; 
-        border-radius: 10px; 
-        font-family: 'Pirata One'; 
-        font-size: 1.3rem; 
-        margin-top: 10px; 
-        display: none; 
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        background: var(--azul-p); color: white; width: 100%; padding: 15px; 
+        border: none; border-radius: 10px; font-family: 'Pirata One'; 
+        font-size: 1.3rem; margin-top: 10px; display: none; 
     }
 
-    #status-archivo { color: #1e8449; font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 0.9rem; }
-/* Botón de Bitácora Compartida - Posición Superior */
-.btn-bitacora-flotante {
-    position: fixed !important; /* Fuerza la posición */
-    top: 20px !important;
-    right: 20px !important;
-    background-color: #5dade2 !important; /* El azul claro que pediste */
-    color: white !important;
-    padding: 12px 20px !important;
-    border-radius: 30px !important;
-    z-index: 999999 !important; /* El número más alto posible */
-    display: none; /* Se mantiene oculto hasta que entres con contraseña */
-    border: 2px solid white !important;
-    font-family: 'Pirata One', cursive;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    display: none;      /* Se activa solo cuando entras a un rol */
-    transition: transform 0.2s, background 0.3s;
-}
+    .btn-accion:disabled {
+        background-color: #95a5a6 !important;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 
-.btn-bitacora-flotante:hover {
-    background: #3498db;
-    transform: scale(1.05);
-}
+    /* 6. MODALES Y BITÁCORA FLOTANTE */
+    .btn-bitacora-flotante {
+        position: fixed !important; top: 20px !important; right: 20px !important;
+        background-color: #5dade2 !important; color: white !important;
+        padding: 12px 20px !important; border-radius: 30px !important;
+        z-index: 999999 !important; border: 2px solid white !important;
+        font-family: 'Pirata One', cursive; cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4); display: none;
+    }
 
-/* Ajuste al Modal para que la 'X' sea muy visible */
-.cerrar-modal {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 35px;
-    color: #78281f;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 5001;
-}
+    #modal-bitacora {
+        display: none; position: fixed; z-index: 1000000;
+        left: 0; top: 0; width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.8);
+    }
+
+    .cerrar-modal {
+        position: absolute; right: 20px; top: 15px;
+        font-size: 35px; color: #78281f; font-weight: bold; cursor: pointer;
+    }
+
+    /* 7. PANTALLA FINAL (Animación y Textura Papyrus) */
+    #pantalla-final {
+        background-image: url('https://www.transparenttextures.com/patterns/papyrus.png');
+        background-color: rgba(0,0,0,0.95);
+    }
+
+    #pantalla-final > div {
+        animation: aparecerFinal 1.2s ease-out;
+    }
+
+    @keyframes aparecerFinal {
+        from { opacity: 0; transform: scale(0.8) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    #status-archivo { color: var(--verde-sello); font-weight: bold; text-align: center; margin-bottom: 10px; }
 </style>
 <body>
-    <button id="btn-bitacora-global" onclick="abrirBitacoraCompartida()" class="btn-bitacora-flotante">
+    <button id="btn-bitacora-global" onclick="abrirBitacoraCompartida()" class="btn-bitacora-flotante" style="display: none;">
         📜 BITÁCORA DEL GREMIO
     </button>
-    
-    </body>
 
-    <div id="menu-roles">
-        <h1 style="color: var(--pergamino); text-align: center; font-family: 'Pirata One'; font-size: 2.2rem; margin-bottom: 10px;">Archivo del Pacífico</h1>
-        <div class="tarjeta-rol" onclick="accesoRol('Comerciante')"><h2>Comerciante</h2><p>Acapulco → Manila</p></div>
-        <div class="tarjeta-rol" onclick="accesoRol('Cartógrafo')"><h2>Cartógrafo</h2><p>Acapulco → Manila</p></div>
-        <div class="tarjeta-rol" onclick="accesoRol('Navegante')"><h2>Navegante</h2><p>Manila → Acapulco</p></div>
-        <div class="tarjeta-rol" onclick="accesoRol('Artesano')"><h2>Artesano</h2><p>Manila → Acapulco</p></div>
+    <div id="menu-roles" style="display: flex; flex-direction: column; align-items: center; overflow-y: auto; padding-top: 20px;">
+        <div style="text-align: center; width: 100%; margin-top: 109px; margin-bottom: 0px; padding: 10px 0;">
+            <img src="https://www.sanildefonso.org.mx/expos/somospacifico/images/logo_txt.png" 
+                 alt="Somos Pacífico" 
+                 style="width: 50%; max-width: 260px; height: auto; filter: brightness(0) invert(1); display: inline-block;">
+        </div>
+
+        <div class="tarjeta-rol" style="margin-top: -10px !important; width: 90%;" onclick="accesoRol('Comerciante')">
+            <h2>Comerciante</h2>
+            <p>Acapulco → Manila</p>
+        </div>
+        <div class="tarjeta-rol" style="width: 90%;" onclick="accesoRol('Cartógrafo')"><h2>Cartógrafo</h2><p>Acapulco → Manila</p></div>
+        <div class="tarjeta-rol" style="width: 90%;" onclick="accesoRol('Navegante')"><h2>Navegante</h2><p>Manila → Acapulco</p></div>
+        <div class="tarjeta-rol" style="width: 90%;" onclick="accesoRol('Artesano')"><h2>Artesano</h2><p>Manila → Acapulco</p></div>
+
+        <div style="text-align: center; margin-top: 30px; padding-bottom: 20px; opacity: 0.8;">
+            <img src="https://17instituto.org/wp-content/uploads/2022/04/SanIldef-1024x436.png" 
+                 style="max-width: 110px; height: auto; filter: brightness(0) invert(1);">
+        </div>
     </div>
 
     <div id="map"></div>
 
-    <div id="panel-datos">
+    <div id="panel-datos" style="display: none;">
         <div class="tirador"></div>
         <div class="contenido-scroll">
             <div class="header-sala">
@@ -198,12 +204,11 @@
                 <p id="info-pregunta" class="pregunta-box">Pregunta didáctica...</p>
             </div>
 
-            <button id="btn-next" class="btn-accion" onclick="siguienteSala()">Siguiente Sala →</button>
+            <button id="btn-next" class="btn-accion" onclick="siguienteSala()" style="display: none;">Siguiente Sala →</button>
 
             <div id="bitacora-container">
                 <div class="bitacora">
                     <textarea id="texto-bitacora" class="input-estilo" placeholder="Escribe tu hallazgo..."></textarea>
-                    
                     <div id="status-archivo"></div> 
                     
                     <button type="button" class="btn-file" onclick="document.getElementById('archivo-oculto').click()">
@@ -219,14 +224,38 @@
         </div>
     </div>
 
-    <div id="modal-bitacora" class="modal-personalizado">
-        <div class="modal-contenido">
-            <span class="cerrar-modal" onclick="cerrarBitacora()">&times;</span>
-            <h2 style="font-family: 'Pirata One'; color: #78281f; text-align: center; margin-top: 0;">Memorias de Navegantes</h2>
-            <div id="lista-comentarios-modal">
-                </div>
+    <div id="modal-bitacora" style="display: none; position: fixed; z-index: 10000000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center;">
+        <div style="background: #fdf5e6; padding: 20px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 3px double #b2945d;">
+            <span onclick="document.getElementById('modal-bitacora').style.display='none'" style="float: right; cursor: pointer; font-size: 30px; font-weight: bold;">&times;</span>
+            <h2 style="font-family: 'Pirata One'; color: #78281f; text-align: center;">Memorias de Navegantes</h2>
+            <div id="lista-comentarios-modal"></div>
         </div>
     </div>
+
+    <div id="pantalla-final" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 20000000; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="text-align: center; border: 5px double #b2945d; background: #fdf5e6; padding: 40px; border-radius: 15px; max-width: 90%; width: 500px; box-shadow: 0 0 50px rgba(178, 148, 93, 0.5);">
+            <h1 style="font-family: 'Pirata One', serif; font-size: 3rem; color: #78281f; margin-top: 0;">¡EXPEDICIÓN COMPLETADA!</h1>
+            <hr style="border: 1px solid #b2945d; width: 80%; margin: 20px auto;">
+            <p style="font-size: 1.2rem; line-height: 1.6; color: #1b2631;">
+                Honorable <span id="final-rol" style="font-weight: bold; color: #78281f;"></span>, <br><br>
+                Tus hallazgos han sido sellados en el <strong>Archivo del Pacífico</strong>. 
+                Gracias a tu pericia, la ruta permanece viva.
+            </p>
+            <div style="background: #eeeae0; padding: 15px; border-radius: 10px; margin: 25px 0; border: 1px dashed #78281f;">
+                <p style="margin: 0; font-size: 0.9rem; color: #555;">ID DE VIAJERO:</p>
+                <h2 id="final-id" style="margin: 5px 0; letter-spacing: 3px; color: #1b2631;"></h2>
+            </div>
+            <button onclick="location.reload()" style="background: #1b2631; color: white; padding: 15px 40px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: bold;">
+                INICIAR NUEVA TRAVESÍA
+            </button>
+        </div>
+    </div>
+
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 500; pointer-events: none; display: flex; align-items: center; gap: 20px; opacity: 0.4;">
+        <img src="https://www.sanildefonso.org.mx/expos/somospacifico/images/logo_txt.png" style="width: 100px; filter: brightness(0);">
+        <img src="https://17instituto.org/wp-content/uploads/2022/04/SanIldef-1024x436.png" style="width: 80px; filter: brightness(0);">
+    </div>
+</body>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
     // --- 1. CONFIGURACIÓN GLOBAL Y SEGURIDAD ---
@@ -337,7 +366,7 @@
     };
 
     // --- 4. FUNCIONES DE INTERFAZ Y MAPA ---
-  function accesoRol(rol) {
+ function accesoRol(rol) {
         const pass = prompt(`Ingrese la contraseña de acceso para el perfil de ${rol}:`);
         if (pass === LLAVES_ACCESO[rol]) {
             rolActivo = rol;
@@ -370,34 +399,56 @@
         renderPoint(1);
     }
 
-    function renderPoint(id) {
-        const hito = rutaActual[id-1];
-        const info = baseDeDatos[rolActivo][id-1];
-        const marker = L.marker(hito.c).addTo(map);
+  function renderPoint(id) {
+    const hito = rutaActual[id-1];
+    const info = baseDeDatos[rolActivo][id-1];
+    const marker = L.marker(hito.c).addTo(map);
+    
+    marker.on('click', () => {
+        document.getElementById('nombre-hito').innerText = info.n;
+        document.getElementById('info-dato').innerText = info.d;
+        document.getElementById('info-pregunta').innerText = info.p;
+        document.getElementById('sala-tag').innerText = `Sala ${id}/15`;
+
+        // --- LÓGICA DEL CANDADO AQUÍ ---
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) {
+            btnNext.style.display = 'block'; // Lo mostramos
+            btnNext.disabled = true;        // 🔒 Lo bloqueamos
+            btnNext.innerText = "🔒 RESPONDE PARA AVANZAR"; // Texto de aviso
+        }
+
+        // Limpiamos el texto de la bitácora anterior para que escriban de nuevo
+        document.getElementById('texto-bitacora').value = "";
         
-        marker.on('click', () => {
-            document.getElementById('nombre-hito').innerText = info.n;
-            document.getElementById('info-dato').innerText = info.d;
-            document.getElementById('info-pregunta').innerText = info.p;
-            document.getElementById('btn-next').style.display = 'block';
-            document.getElementById('sala-tag').innerText = `Sala ${id}/15`;
-            map.flyTo(hito.c, 4);
-            cargarComentarios(info.n);
-        });
+        map.flyTo(hito.c, 4);
+        cargarComentarios(info.n);
+    });
 
-        if (id > 1) {
-            L.polyline([rutaActual[id-2].c, hito.c], { color: '#1b2631', weight: 3, dashArray: '8, 12', opacity: 0.6 }).addTo(map);
-        }
+    if (id > 1) {
+        L.polyline([rutaActual[id-2].c, hito.c], { 
+            color: '#1b2631', 
+            weight: 3, 
+            dashArray: '8, 12', 
+            opacity: 0.6 
+        }).addTo(map);
     }
-
-    function siguienteSala() {
-        if (salaActual < 15) {
-            salaActual++;
-            renderPoint(salaActual);
-            document.getElementById('btn-next').style.display = 'none';
-        }
+}
+function siguienteSala() {
+    if (salaActual < 15) {
+        salaActual++;
+        renderPoint(salaActual);
+        // Al cambiar de sala, el botón se oculta hasta que el usuario responda la nueva pregunta
+        document.getElementById('btn-next').style.display = 'none';
+    } else {
+        // Si ya estamos en la 15 (salaActual === 15) y presionan el botón:
+        const pantallaFinal = document.getElementById('pantalla-final');
+        document.getElementById('final-rol').innerText = rolActivo;
+        document.getElementById('final-id').innerText = viajeroID;
+        pantallaFinal.style.display = 'block';
+        document.getElementById('panel-datos').style.display = 'none';
     }
-    let puntoActualParaBitacora = "";
+}
 
 	// --- ACTIVAR BOTÓN TRAS CONTRASEÑA ---
 function accesoRol(rol) {
@@ -536,54 +587,121 @@ function cerrarBitacora() {
         if (file) { status.innerText = "📎 Listo para sellar: " + file.name; }
     }
 
-    async function enviarReporte() {
-        const texto = document.getElementById('texto-bitacora').value;
-        const inputArchivo = document.getElementById('archivo-oculto');
-        const archivo = inputArchivo.files[0];
-        const hitoNombre = baseDeDatos[rolActivo][salaActual - 1].n;
+  // --- FUNCIÓN PARA AVANZAR O FINALIZAR ---
+function siguienteSala() {
+    console.log("Clic en botón. Sala actual:", salaActual);
 
-        if (!texto.trim() && !archivo) {
-            alert("Navegante, debes escribir algo o adjuntar una evidencia.");
-            return;
+    if (salaActual < 15) {
+        salaActual++;
+        renderPoint(salaActual);
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) btnNext.style.display = 'none';
+    } else {
+        // Secuencia de fin de viaje
+        const pantallaFinal = document.getElementById('pantalla-final');
+        const rDisplay = document.getElementById('final-rol');
+        const iDisplay = document.getElementById('final-id');
+
+        if (pantallaFinal && rDisplay && iDisplay) {
+            rDisplay.innerText = rolActivo.toUpperCase();
+            iDisplay.innerText = viajeroID;
+            pantallaFinal.style.display = 'flex'; // Usamos flex para centrar
+            document.getElementById('panel-datos').style.display = 'none';
         }
+    }
+}
 
-        let payload = {
-            idVisitante: viajeroID,
-            rol: rolActivo,
-            punto: hitoNombre,
-            texto: texto,
-            archivoB64: null,
-            tipoMime: null,
-            nombreArchivo: null
-        };
+// --- FUNCIÓN PARA ENVIAR REPORTE (CON ATAJO KNAAN) ---
+async function enviarReporte() {
+    const textoElement = document.getElementById('texto-bitacora');
+    const texto = textoElement ? textoElement.value : "";
 
-        if (archivo) {
-            const reader = new FileReader();
-            const base64Promise = new Promise((resolve) => {
-                reader.onload = (e) => resolve(e.target.result);
-                reader.readAsDataURL(archivo);
-            });
-            payload.archivoB64 = await base64Promise;
-            payload.tipoMime = archivo.type;
-            payload.nombreArchivo = archivo.name;
+    // --- ATAJO DE DESARROLLADOR: KNAAN ---
+    if (texto.trim().toUpperCase() === "KNAAN") {
+        salaActual = 15; 
+        renderPoint(salaActual); 
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) {
+            btnNext.disabled = false;
+            btnNext.style.display = "block";
+            btnNext.innerText = "📜 FINALIZAR TRAVESÍA";
+            btnNext.style.background = "#78281f";
         }
-        enviarFetch(payload);
+        if (textoElement) textoElement.value = ""; 
+        return; 
     }
 
-    // ... funciones de envío ...
-    function enviarFetch(payload) {
-        fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert("✅ Reporte sellado con éxito.");
-            document.getElementById('texto-bitacora').value = "";
-            document.getElementById('archivo-oculto').value = "";
-            if(document.getElementById('status-archivo')) document.getElementById('status-archivo').innerText = "";
-        })
-        .catch(err => alert("Error de conexión."));
+    // --- FLUJO NORMAL ---
+    const inputArchivo = document.getElementById('archivo-oculto');
+    const archivo = inputArchivo ? inputArchivo.files[0] : null;
+    const hitoNombre = baseDeDatos[rolActivo][salaActual - 1].n;
+
+    if (!texto.trim() && !archivo) {
+        alert("Navegante, debes escribir algo o adjuntar una evidencia.");
+        return;
     }
 
+    let payload = {
+        idVisitante: viajeroID,
+        rol: rolActivo,
+        punto: hitoNombre,
+        texto: texto,
+        archivoB64: null,
+        tipoMime: null,
+        nombreArchivo: null
+    };
+
+    if (archivo) {
+        const reader = new FileReader();
+        const base64Promise = new Promise((resolve) => {
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(archivo);
+        });
+        payload.archivoB64 = await base64Promise;
+        payload.tipoMime = archivo.type;
+        payload.nombreArchivo = archivo.name;
+    }
+
+    enviarFetch(payload);
+}
+
+ function enviarFetch(payload) {
+    fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        // 1. Notificación de éxito
+        alert("✅ Reporte sellado con éxito. El camino está despejado.");
+
+        // 2. DESBLOQUEO DEL BOTÓN CON LÓGICA DE CIERRE
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) {
+            btnNext.disabled = false; // 🔓 Quita el bloqueo
+            btnNext.style.display = "block"; // Asegura que se vea
+
+            // Verificamos si es la última sala para cambiar el texto
+            if (salaActual === 15) {
+                btnNext.innerText = "📜 FINALIZAR TRAVESÍA";
+                btnNext.style.background = "#78281f"; // Color vino/distintivo para el final
+            } else {
+                btnNext.innerText = "SIGUIENTE SALA →";
+                btnNext.style.background = "var(--oro)"; 
+            }
+        }
+
+        // 3. Limpieza de los campos (Para la siguiente sala)
+        document.getElementById('texto-bitacora').value = "";
+        document.getElementById('archivo-oculto').value = "";
+        if(document.getElementById('status-archivo')) {
+            document.getElementById('status-archivo').innerText = "";
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error de conexión. El Archivo Real no pudo recibir tu reporte.");
+    });
+}
 </script>
+
