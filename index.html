@@ -230,7 +230,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
     // --- 1. CONFIGURACIÓN GLOBAL Y SEGURIDAD ---
-    const viajeroID = "VIAJERO-" + Math.floor(1000 + Math.random() * 9000);
+    let viajeroID = "VIAJERO-" + Math.floor(1000 + Math.random() * 9000);
     let map;
     let salaActual = 1;
     let rolActivo = "";
@@ -343,6 +343,8 @@
             rolActivo = rol;
             salaActual = 1;
             rutaActual = (rol === "Cartógrafo" || rol === "Comerciante") ? [...rutaBase].reverse() : [...rutaBase];
+
+			viajeroID = "VIA-" + Math.floor(Math.random() * 9000 + 1000);
             
             document.getElementById('menu-roles').style.display = 'none';
             document.getElementById('panel-datos').style.display = 'flex';
@@ -407,6 +409,8 @@ function accesoRol(rol) {
         
         document.getElementById('menu-roles').style.display = 'none';
         document.getElementById('panel-datos').style.display = 'flex';
+		document.getElementById('rol-nombre').innerText = rol.toUpperCase();
+            document.getElementById('id-viajero-display').innerText = viajeroID;
         
         // MOSTRAR EL BOTÓN AZUL (Ahora sí)
         const btn = document.getElementById('btn-bitacora-global');
@@ -581,4 +585,5 @@ function cerrarBitacora() {
         })
         .catch(err => alert("Error de conexión."));
     }
+
 </script>
