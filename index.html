@@ -2,6 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K60NZLB9SJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-K60NZLB9SJ');
+</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Galeón de Manila - Archivo Digital Completo</title>
     
@@ -9,8 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Pirata+One&display=swap" rel="stylesheet">
 
 <style>
-    /* 1. VARIABLES Y BASES */
-    :root { 
+        :root { 
         --azul-p: #1b2631; 
         --pergamino: #fdf5e6; 
         --oro: #b2945d; 
@@ -26,8 +34,7 @@
         overflow: hidden; 
     }
 
-    /* 2. MENÚ DE ROLES (Estilo Borrador con Radial Gradient) */
-    #menu-roles { 
+        #menu-roles { 
         display: flex; 
         flex-direction: column; 
         gap: 12px; 
@@ -61,7 +68,7 @@
         font-size: 1.8rem; 
     }
 
-    /* 3. MAPA */
+ 
     #map { 
         height: 100vh; 
         width: 100%; 
@@ -71,20 +78,19 @@
         background: #aad3df; 
     }
 
-    /* 4. PANEL DE DATOS (Elevado para proteger Marca de Agua) */
-    #panel-datos { 
+        #panel-datos { 
         position: absolute; 
-        bottom: 90px; 
-        width: 94%; 
-        left: 3%; 
-        height: 48vh; 
+        bottom: 0px; 
+        width: 100%; 
+        left: 0%; 
+        height: 45vh; 
         background: var(--pergamino); 
-        border: 3px solid var(--oro); 
+        border: 4px solid var(--oro); 
         border-radius: 20px; 
         z-index: 2000; 
         display: none; 
         flex-direction: column; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
     }
 
     .contenido-scroll { padding: 0 20px 20px 20px; overflow-y: auto; flex-grow: 1; }
@@ -160,6 +166,46 @@
     }
 
     #status-archivo { color: var(--verde-sello); font-weight: bold; text-align: center; margin-bottom: 10px; }
+/* Diseño de la Cápsula de Sala */
+#sala-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 50px; 
+    font-weight: bold;
+    font-family: 'Pirata One', cursive; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); 
+    transition: all 0.4s ease; 
+    margin-bottom: 15px;
+    border: 2px solid rgba(255,255,255,0.2); 
+}
+
+#info-dato {
+    font-size: 1.2rem;       
+    line-height: 1.6;           color: var(--tinta);
+    margin-bottom: 15px;
+    text-align: justify;     
+}
+
+
+#info-pregunta {
+    font-size: 1.15rem;      
+    font-weight: bold;       
+    color: #1b2631;          
+    font-style: italic;      
+    border-left: 3px solid var(--oro); 
+    padding-left: 10px;
+}
+
+
+#nombre-hito {
+    font-size: 2rem;         /* Bastante grande para que sea lo primero que lean */
+    font-family: 'Pirata One', cursive;
+    color: var(--azul-p);
+    margin-top: 5px;
+}
 </style>
 <body>
     <button id="btn-bitacora-global" onclick="abrirBitacoraCompartida()" class="btn-bitacora-flotante" style="display: none;">
@@ -182,7 +228,7 @@
         <div class="tarjeta-rol" style="width: 90%;" onclick="accesoRol('Artesano')"><h2>Artesano</h2><p>Manila → Acapulco</p></div>
 
         <div style="text-align: center; margin-top: 30px; padding-bottom: 20px; opacity: 0.8;">
-            <img src="https://17instituto.org/wp-content/uploads/2022/04/SanIldef-1024x436.png" 
+            <img src="" 
                  style="max-width: 110px; height: auto; filter: brightness(0) invert(1);">
         </div>
     </div>
@@ -212,12 +258,16 @@
                     <div id="status-archivo"></div> 
                     
                     <button type="button" class="btn-file" onclick="document.getElementById('archivo-oculto').click()">
-                        📷 / 🎙️ ADJUNTAR EVIDENCIA
+                        📷 Pulsa para tomar una foto
                     </button>
-                    <input type="file" id="archivo-oculto" accept="image/*,audio/*" style="display: none;" onchange="actualizarStatusArchivo()">
+                <input type="file" id="archivo-oculto" 
+       accept="image/*" 
+       capture="camera" 
+       style="display: none;" 
+       onchange="actualizarStatusArchivo()">
                     
                     <button onclick="enviarReporte()" class="btn-enviar">
-                        📩 SELLAR REPORTE
+                        📩 click para continuar y espera confirmación
                     </button>
                 </div>
             </div>
@@ -251,233 +301,426 @@
         </div>
     </div>
 
-    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 500; pointer-events: none; display: flex; align-items: center; gap: 20px; opacity: 0.4;">
-        <img src="https://www.sanildefonso.org.mx/expos/somospacifico/images/logo_txt.png" style="width: 100px; filter: brightness(0);">
-        <img src="https://17instituto.org/wp-content/uploads/2022/04/SanIldef-1024x436.png" style="width: 80px; filter: brightness(0);">
-    </div>
+    <div id="contenedor-logo-mapa" style="position: fixed; top: 20px; left: 20px; z-index: 5000; pointer-events: none; display: none;">
+    <img src="https://www.sanildefonso.org.mx/expos/somospacifico/images/logo_txt.png" 
+         style="width: 140px; filter: brightness(0) invert(1); drop-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+</div>
+<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 30000000; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;">
+    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #b2945d; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite; margin-bottom: 20px;"></div>
+    <h2 style="font-family: 'Pirata One'; font-size: 2rem;">SELLANDO REPORTE...</h2>
+    <p style="padding: 0 20px;">Tu evidencia está viajando por el Pacífico.<br>Por favor, no cierres la ventana.</p>
+</div>
+
+<style>
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
 </body>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
     // --- 1. CONFIGURACIÓN GLOBAL Y SEGURIDAD ---
     let viajeroID = "VIAJERO-" + Math.floor(1000 + Math.random() * 9000);
-    let map;
+   var map; // Usar var asegura que todas las funciones puedan mover el mapa.
     let salaActual = 1;
     let rolActivo = "";
     let rutaActual = [];
 
     const LLAVES_ACCESO = {
         "Comerciante": "Seda",
-        "Cartógrafo": "Brújula",
-        "Navegante": "8090",
-        "Artesano": "8090"
+        "Cartógrafo": "Mapa",
+        "Navegante": "Vela",
+        "Artesano": "Taller"
     };
 
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMNAn0fcQogSy6-qiZGUYPUfcIr57tgPUV6icfrvmlglUz1IAbVd2rvNN3hsqyVVen/exec"; 
 
-    // --- 2. RUTA BAS
-    const rutaBase = [
-        { n: "Puerto de Manila", c: [14.59, 120.98] },
-        { n: "Estrecho de San Bernardino", c: [12.58, 124.28] },
-        { n: "Mar de Filipinas", c: [15.0, 132.0] },
-        { n: "Islas Marianas (Guam)", c: [13.44, 144.79] },
-        { n: "Pacífico Norte", c: [30.0, 160.0] },
-        { n: "Corriente de Kuroshio", c: [38.0, 175.0] },
-        { n: "Meridiano 180", c: [40.0, 180.0] }, 
-        { n: "Alta Mar Central", c: [38.0, 195.0] }, 
-        { n: "Zona de Albatros", c: [35.0, 215.0] },
-        { n: "Costa de California", c: [34.0, 240.0] },
-        { n: "Baja California", c: [24.0, 248.0] },
-        { n: "Mar de Cortés", c: [22.0, 252.0] },
-        { n: "Cabo Corrientes", c: [20.4, 254.4] },
-        { n: "Costa de Michoacán", c: [18.5, 257.0] },
-        { n: "Puerto de Acapulco", c: [16.86, 260.11] }
-    ];
+    
+ const rutaBase = [
+    { n: "Puerto de Manila", lat: 14.59, lng: 120.98 },
+    { n: "Estrecho de San Bernardino", lat: 12.58, lng: 124.28 },
+    { n: "Mar de Filipinas", lat: 15.0, lng: 132.0 },
+    { n: "Islas Marianas (Guam)", lat: 13.44, lng: 144.79 },
+    { n: "Pacífico Norte", lat: 30.0, lng: 160.0 },
+    { n: "Corriente de Kuroshio", lat: 38.0, lng: 175.0 },
+    { n: "Meridiano 180", lat: 40.0, lng: 180.0 }, 
+    { n: "Alta Mar Central", lat: 38.0, lng: -165.0 }, 
+    { n: "Zona de Albatros", lat: 35.0, lng: -145.0 },
+    { n: "Costa de California", lat: 34.0, lng: -120.0 },
+    { n: "Baja California", lat: 24.0, lng: -112.0 },
+    { n: "Mar de Cortés", lat: 22.0, lng: -108.0 },
+    { n: "Cabo Corrientes", lat: 20.4, lng: -105.6 },
+    { n: "Costa de Michoacán", lat: 18.5, lng: -103.0 },
+    { n: "Puerto de Acapulco", lat: 16.86, lng: -99.89 }
+];
 
-    // --- 3. BASE DE DATOS (Contenido del Museo) ---
+    
     const baseDeDatos = {
         "Navegante": [
-            { n: "Puerto de Manila", d: "Dato 1", p: "¿Pregunta 1?" },
-            { n: "Estrecho de San Bernardino", d: "Dato 2", p: "¿Pregunta 2?" },
-            { n: "Mar de Filipinas", d: "Dato 3", p: "¿Pregunta 3?" },
-            { n: "Islas Marianas (Guam)", d: "Dato 4", p: "¿Pregunta 4?" },
-            { n: "Pacífico Norte", d: "Dato 5", p: "¿Pregunta 5?" },
-            { n: "Corriente de Kuroshio", d: "Dato 6", p: "¿Pregunta 6?" },
-            { n: "Meridiano 180", d: "Dato 7", p: "¿Pregunta 7?" },
-            { n: "Alta Mar Central", d: "Dato 8", p: "¿Pregunta 8?" },
-            { n: "Zona de Albatros", d: "Dato 9", p: "¿Pregunta 9?" },
-            { n: "Costa de California", d: "Dato 10", p: "¿Pregunta 10?" },
-            { n: "Punta de Baja California", d: "Dato 11", p: "¿Pregunta 11?" },
-            { n: "Mar de Cortés", d: "Dato 12", p: "¿Pregunta 12?" },
-            { n: "Cabo Corrientes", d: "Dato 13", p: "¿Pregunta 13?" },
-            { n: "Costa de Michoacán", d: "Dato 14", p: "¿Pregunta 14?" },
-            { n: "Puerto de Acapulco", d: "Dato 15", p: "¿Pregunta 15?" }
+            { n: "Puerto de Manila", d: `La biblioteca de los trópicos presenta una colección de obras sobre Bali, destacando su papel clave en el arte del siglo XX más allá de su imagen de paraíso tropical. A través de los viajes de Miguel Covarrubias en las décadas de 1920 y 1930, se exploran las afinidades culturales entre Bali y el sur de México.`, p:`Toma una foto a uno de los mapas proyectados que se ajuste mejor a lo que deseas conocer durante esta nueva aventura` },
+            { n: "Estrecho de San Bernardino", d:`Antes de conquistar México-Tenochtitlán, Hernán Cortés entendió que el control del agua era clave. Desde su llegada, mandó construir bergantines con materiales de sus propios barcos y, tras la derrota inicial, reorganizó sus fuerzas con apoyo indígena para fabricar trece naves que fueron llevadas al Lago de Texcoco. Estas embarcaciones hicieron posible el asedio naval que permitió avanzar en la conquista de la ciudad.`, p: `Toma una foto que represente dichos enfrentamientos Navales` },
+            { n: "Mar de Filipinas", d: `Juan López de Velasco (ca. 1530-1598) fue Cronista Mayor de Indias durante el reinado de Felipe II. Intervino en la realización de las topografías basándose en 51 preguntas que se realizaban para poder reunir toda una serie de información social, económica, geográfica, cultural, de cada uno de los pueblos, poblados, aldeas y ciudades que componían los dominios del rey.`, p: `Encuentra en la sala “El Mapa General de Àmerica el Océano Pacifico y la parte este de Asia” de 	Juan Lòpez de Velasco` },
+            { n: "Islas Marianas (Guam)", d: `De los 163 galeones que navegaron la ruta Acapulco–Manila durante 250 años, sólo cuatro fueron capturados por corsarios.El primer galeón que cayó fue el Santa Ana, de 700 toneladas y construido en Guatemala. En 1587, tomado por sorpresa, dos corsarios ingleses comandados por Thomas Cavendish, cerca de Cabo San Lucas. Más de cien años después, en 1709, el corsario Woodes Rogers intentó capturar varios galeones frente a las costas de California, pero solo logró quedarse con uno, el Nuestra Señora de la Encarnación. Eso, querido navegante, no es suerte, es estrategia.`, p: `Toma un foto de lo más representativo para que el Galeón se defendiera` },
+            { n: "Pacífico Norte", d: `Durante 250 años, los galeones de la ruta Acapulco-Manila, transportaron los más diversos productos del archipiélago malayo, de Indonesia, Indochina, China, Japón y la India. Construida de acero en el siglo XVII para asegurar la plata que surcaba los mares.`, p: `Toma un foto del articulo descrito para transportar la plata ` },
+            { n: "Corriente de Kuroshio", d: `Con la ruta transpacífica, comerciantes chinos se establecieron en las afueras de Manila, concentrados en un solo edificio llamado parián, cuyo nombre en tagalo significa “mercado chino”. Este mercado estaba ubicado a tiro de cañón de las fortificaciones, para vigilar y controlar el comercio`, p: `Encuentra el “Arcon Filipino” y toma una foto de la ilustración del Parián` },
+            { n: "Meridiano 180", d: `China envió grandes cantidades de porcelana a Nueva España en los galeones de Manila. Las primeras piezas llegaron durante la dinastía Ming (1368–1644) y, más tarde, la porcelana alcanzó su mayor esplendor artístico con la dinastía Qing (1644–1912), especialmente en los reinados de Kangxi (1662–1722) y Qianlong (1735–1796).`, p: `Usa tu habilidad, navegante, y rastrea en que pieza de porcelana se encuentra el Galeón` },
+            { n: "Alta Mar Central", d: `Este producto es de seda bordada al estilo de las mantillas de Manila. Santa Rosa de Lima es la primera santa americana y tuvo una gran devoción arraigada con la identidad del territorio. La principal carga de los galeones fueron los productos textiles de China e India.`, p: `Usa tu habilidad, navegante, y rastrea la pieza descrita, encuentrala y toma una foto. ` },
+            { n: "Zona de Albatros", d: `El naufragio del galeón San Felipe en 1596 provocó la ira de Toyotomi Hideyoshi y tuvo graves consecuencias. Además de pérdidas económicas de un millón y medio de pesos, el suceso derivó en la crucifixión de 1597, dejando una lección clave sobre los riesgos de la navegación.`, p: `¿Cómo alteraría tu desembarco la noticia de los mártires franciscanos para desembarcar en japón?` },
+            { n: "Costa de California", d: `Es un paño de seda originalmente tejido en Cantón, salpicado de coloridos motivos y rematado con flecos. Su nombre se deriva de la capital filipina, desde donde era enviado a España a través de los puertos mexicanos.`, p: `Toma una foto del artículo mencionado, el cual era exportado a través de puertos Mexicanos.` },
+            { n: "Punta de Baja California", d: `Es reconocida por portar el mantón de Manila, un paño de seda originalmente tejido en Cantón, salpicado de coloridos motivos y rematado con flecos. Su nombre se deriva de la capital filipina, desde donde era enviado a España a través de los puertos mexicanos.`, p: `Toma una foto del artículo mencionado, el cual era exportado a través de puertos Mexicanos ` },
+            { n: "Mar de Cortés", d: `Con la Independencia de México, los galeones fueron desapareciendo, entonces tu oficio, su nombre y peculiaridades evolucionaron ahora navegante es usted un Capitán de buque. Desde 1765, la Real Armada Española abrió rutas directas entre España y Manila para crear una alternativa comercial, fortaleciendo el control económico y político en Filipinas. La Independencia de México debilitó la ruta transpacífica y, desde 1815, los viajes del galeón perdieron relevancia progresivamente.`, p: `Navegante, tal vez este sea tu último viaje por el pacifico como lo conoces, ¿Cuál sería la lección más importante que la navegación te ha dado? ` },
+            { n: "Cabo Corrientes", d: `Miguel Covarrubias fue un artista y antropólogo mexicano que, tras viajar a Bali, publicó Island of Bali (1937), obra clave para difundir la isla a nivel mundial. En 1940 realizó murales para la Exposición del Golden Gate donde se resaltó la diversidad cultural del Pacífico y cuestionaron visiones exóticas`, p: `Que libro llevarías como parte de tu viaje, elije sabiamente. Toma una foto9` },
+            { n: "Costa de Michoacán", d: `Apichatpong Weerasethakul, (Tailandia, 1970) es un director, productor y guionista de cine y artista visual tailandés. En su obra, la realidad, la fantasía, los sueños, las pesadillas y los fantasmas conviven en un mismo lugar que opera según sus propias reglas, y que trata de reflejar la vida tal y como la percibimos.`, p: `A través de tu profesión ¿De qué forma podrías retratar la vida como la conoces? ` },
+            { n: "Puerto de Acapulco", d: `Reflexión `, p: `¿Cómo imaginas que los navegantes del mañana se verán a sí mismos dentro de un mundo donde las rutas, el comercio y la comunicación están cada vez más conectados?` }
         ],
-        "Artesano": [
-            { n: "Puerto de Manila", d: "Dato 1", p: "¿Pregunta 1?" },
-            { n: "Estrecho de San Bernardino", d: "Dato 2", p: "¿Pregunta 2?" },
-            { n: "Mar de Filipinas", d: "Dato 3", p: "¿Pregunta 3?" },
-            { n: "Islas Marianas (Guam)", d: "Dato 4", p: "¿Pregunta 4?" },
-            { n: "Pacífico Norte", d: "Dato 5", p: "¿Pregunta 5?" },
-            { n: "Corriente de Kuroshio", d: "Dato 6", p: "¿Pregunta 6?" },
-            { n: "Meridiano 180", d: "Dato 7", p: "¿Pregunta 7?" },
-            { n: "Alta Mar Central", d: "Dato 8", p: "¿Pregunta 8?" },
-            { n: "Zona de Albatros", d: "Dato 9", p: "¿Pregunta 9?" },
-            { n: "Costa de California", d: "Dato 10", p: "¿Pregunta 10?" },
-            { n: "Punta de Baja California", d: "Dato 11", p: "¿Pregunta 11?" },
-            { n: "Mar de Cortés", d: "Dato 12", p: "¿Pregunta 12?" },
-            { n: "Cabo Corrientes", d: "Dato 13", p: "¿Pregunta 13?" },
-            { n: "Costa de Michoacán", d: "Dato 14", p: "¿Pregunta 14?" },
-            { n: "Puerto de Acapulco", d: "Dato 15", p: "¿Pregunta 15?" }
-        ],
-        "Cartógrafo": [
-            { n: "Puerto de Acapulco", d:`El cacao, de origen mexicano, fue un bien de gran valor: además de consumirse, funcionó como moneda en Mesoamérica. Las deidades asociadas a él representan su poder económico y su papel como uno de los primeros productos agrícolas exportados masivamente hacia las islas.`, p: `Busca la pieza que creas que tendría el valor más alto en el mercado de “curiosidades” de la época. Toma una fotografía y escribe como pie de foto: 'Precio estimado:..` },
-            { n: "Costa de Michoacán", d:`El Códice Florentino no solo documenta aspectos culturales, sino también descripciones del territorio que ayudaron a la Corona a comprender su organización. Estas representaciones fueron un antecedente clave para el desarrollo de mapas que conectaban el centro de México con los puertos de Acapulco y Veracruz.`,p:`Encuentra el Biombo de la Conquista. Tómale una foto a tu detalle favorito y responde: Si este biombo fuera un 'mapa' de la ciudad, ¿qué edificio usarías como punto de referencia para no perderte?`},
-            { n: "Cabo Corrientes",  d:`En 1734, Joseph González Cabrera Bueno publicó en Manila la guía más importante para cruzar el Pacífico. Sus mapas eran tan precisos que ayudaban a evitar los "bajos" (arrecifes) que podían hundir el Galeón.`,p:`Busca libro “voyage around the World de George Anson” y tomale una foto`},
-            { n: "Mar de Cortés",  d:`El Cartógrafo usaba el Reloj Solar y la Calcografía (mapas impresos en cobre) para calcular la ruta exacta.`,p:`Mira el Reloj Solar. Día 150 en el mar. El sol marca nuestra posición. Según mis cálculos, estamos cerca de las Islas Marianas ¿ Qué colocarías en tu bitácora de viaje? graba un audio`},
-            { n: "Punta de Baja California",  d:`La Ciudad de México era el eje financiero de la ruta. Aquí, la Plata Mexicana (reales de a ocho) se convertía en la primera moneda global. Los mapas de los puertos (Acapulco y Veracruz) no estaban aislados: el Cartógrafo debía conocer el camino terrestre que los unía para asegurar que la plata llegara a los barcos a tiempo`,p:`Observa los cuadros de los puertos, que puerto consideras que cobra mayor importancia y por qué`},
-            { n: "Costa de California",  d:`El cuadro del Zócalo es un ejercicio de cartografía teórica. El autor utilizó descripciones para ubicar el Parián y los puestos, demostrando que en el siglo XVIII, un mapa podía ser tan fiel como la información que se enviaba por barco, permitiendo que alguien en Europa “viera” la Ciudad de México.`,p:`Como Cartógrafo, ¿qué tan difícil crees que fue para el autor dibujar estas calles sin haberlas caminado nunca?`},
-            { n: "Zona de Albatros",  d:`La palabra "petaca" (que hoy asociamos a algo pequeño) se usaba originalmente para designar una maleta o cofre hecho de palma tejida donde se transportaba el tabaco y el cacao`,p:`Si tuvieras que usar un emoji para representar el cacao en un mapa ¿cuál usarías?`},
-            { n: "Alta Mar Central", d:`Los textos navales de Cabrera Bueno muestran cómo la geografía y la religión estaban estrechamente ligadas. En el Estrecho de San Bernardino, donde las corrientes eran extremadamente peligrosas, los navegantes confiaban más en la protección de la Virgen de la Guía que en los mapas para atravesar el archipiélago.`,p:`Según tu experiencia de trazos y dibujos ¿Cúal de estas piezas es más difícil y por qué?`},
-            { n: "Meridiano 180", d:`El naufragio del galeón San Felipe en 1596 provocó la ira de Toyotomi Hideyoshi y tuvo graves consecuencias. Además de pérdidas económicas de un millón y medio de pesos, el suceso derivó en la crucifixión de 1597, dejando una lección clave sobre los riesgos de la navegación`,p:`¿Cómo alteraría tu desembarco la noticia de los mártires franciscanos para desembarcar en japón`},
-            { n: "Corriente de Kuroshio",  d:`Palabras cotidianas como el agua llegaron a Filipinas desde Nueva España. Este intercambio lingüístico evidencia el papel del territorio como un “puente” que conecta materiales y culturas a ambos lados del océano.`,p:`Si tuvieras la encomienda de llevar alguna de estas piezas a un noble novohispano, ¿cual elegirías? tomale una foto`},
-            { n: "Pacífico Norte",  d:`El sistema terminó en 1815, justo cuando México buscaba su soberanía. Para tu oficio, esto significó que los mapas dejaron de ser "Secretos de Estado" de la Corona Española para convertirse en los mapas de una nueva nación, transformando la cartografía militar en cartografía civil y artística.`,p:`Graba una nota de voz dirigida a los antiguos tripulantes del Galeón. Explícales que, aunque el Galeón ya no navega, la 'ruta' que trazaron sigue viva en el arte y en la identidad de la gente`},
-            { n: "Islas Marianas (Guam)",  d:`Como Cartógrafo, ves en los murales de Rivera la confirmación de tu trabajo: México no es solo un destino, sino el eje central de un mapa global que tú ayudaste a definir y que el muralismo ahora celebra como identidad.`,p:`Como Cartógrafo, ves en los murales de Rivera la confirmación de tu trabajo: México no es solo un destino, sino el eje central de un mapa global que tú ayudaste a definir y que el muralismo ahora celebra como identidad.`},
-            { n: "Mar de Filipinas", d: "Proximamente", p: "Proximamente" },
-            { n: "Estrecho de San Bernardino", d: "Proximamente 14", p: "¿Proximamente 14?" },
-            { n: "Puerto de Manila", d: "Proximamente 15", p: "¿Proximamente 15?" }
-        ],
-        "Comerciante": [
-            { n: "Puerto de Acapulco", d: `El cacao, de origen mexicano, fue un bien de gran valor: además de consumirse, funcionó como moneda en Mesoamérica. Las deidades asociadas a él representan su poder económico y su papel como uno de los primeros productos agrícolas exportados masivamente hacia las islas.`, p:`Busca la pieza que creas que tendría el valor más alto en el mercado de 'curiosidades' de la época. Toma una fotografía y escribe como pie de foto: 'Precio estimado:...'`  },
-            { n: "Costa de Michoacán", d: `El biombo como mercancía de lujo:Los biombos formaban parte de los objetos más codiciados por los sectores más ricos de la Nueva España. La pieza que tienes frente a ti pudo haber sido adquirida por un virrey o un comerciante acaudalado, mostrando cómo el arte también fue un negocio altamente rentable.`, p: `¿Cuál sería el método para resguardar el biombo que usarías si lo tuvieras que llevar al centro de la Ciudad de México para su venta?` },
-            { n: "Cabo Corrientes", d: `Las bitácoras que ves en la sala registraban legalmente los bienes de lujo autorizados para cruzar el océano, garantizando un comercio sin competencia ilegal.`, p: `¿Qué consideras que sería una “mercancía legal”?` },
-            { n: "Mar de Cortés", d: `El contacto y comercio entre México y Filipinas se mantuvo durante más de 250 años. La manta que narra un viaje de más de 200 días simboliza el tiempo de maduración de la inversión: cada día en el mar incrementan los riesgos, desde el daño al casco hasta la humedad que podía arruinar la carga y reducir las ganancias finales.`, p: `Imagina que llevas meses en El Galeón, que te preocupa más por tus productos, la humedad, el movimiento, el ataque de corsarios o alguna otra cosa que te pudiera hacer perder tu inversión?Graba un audio` },
-            { n: "Punta de Baja California", d: `Carga límite (valor de mercancía): Existía un límite de carga llamada “permisión” en diversas épocas, se permitir la exportación de 250,000 monedas desde Manila y el retorno de 500,00 monedas en plata desde Acapulco`, p: `¿Qué llevarías para vender desde Manila? Graba un audio` },
-            { n: "Costa de California", d: `El parián era un mercado especializado en bienes de lujo. Surgido en Manila como espacio para el comercio chino, su modelo fue tan exitoso que se replicó en la Plaza Mayor de la Ciudad de México, como muestran la maqueta y la pintura. Aquí se concentraba y controlaba la venta de seda, marfil y porcelana.`, p: `Toma una foto en la pintura de la plaza donde colocarias tu puesto` },
-            { n: "Zona de Albatros", d: `Porcelana de importación:Las vajillas de porcelana china fueron uno de los productos más valiosos del comercio transpacífico. Las piezas que ves en la sala no son solo objetos artísticos: eran artículos de alto valor que generaban grandes ganancias al llegar a la Ciudad de México`, p: `¿Cuáles son los principales colores de la porcelana que hay en la sala?` },
-            { n: "Alta Mar Central", d: `Aunque se tenía una ley para poner límite al cargamento, en la práctica el valor de los transportado era mucho mayor. Se estima que en el siglo XVIII se llegaba a despachar hasta 2.5 millones de monedas de plata de retorno, superando por mucho el permiso oficial.`, p: `¿Qué Piezas le venderías a un sacerdote novohispano, de las que hay en la sala?` },
-            { n: "Meridiano 180", d:`El sistema de licencias (Shuinsen):Tras diversos conflictos, el comercio con Japón quedó restringido a los barcos del sello bermejo, autorizados por el gobierno. Sin este permiso oficial, ninguna mercancía podía desembarcar, convirtiendo a Japón en un mercado cerrado para quienes no contaban con influencia política`, p: `Llevas meses navegando con especias y seda hacia Japón. Pero al llegar al puerto de Nagasaki, un oficial te detiene. No te pregunta qué vendes, sino que te pide ver el Sello Bermejo ¿Qué le dirías? graba tu respuesta en un audio` },
-            { n: "Corriente de Kuroshio", d: `El mercado del mestizaje cultural:La conquista de Filipinas dio origen a un intenso mestizaje cultural y social. Los trajes de los mestizos reflejan esta mezcla y revelan una nueva oportunidad comercial: prendas que combinan la elegancia europea con materiales asiáticos, destinadas a una clase social emergente y con demandas propias.`, p: `¿En qué condiciones crees que se debería de transportar las prendas?` },
-            { n: "Pacífico Norte", d: `El Galeón fue un sistema que duró de 1565 a 1815. Como comerciante, este es el dato del "cierre de la empresa" tras 250 años, el modelo de monopolio que te protegía dejó de ser rentable debido a las guerras de independencia en México y la presión de nuevas potencias comerciales.`, p: `¿Qué objeto crees que haya sido el más difícil de conseguir una vez el Galeón dejó de navegar?` },
-            { n: "Islas Marianas (Guam)", d: `Las obras de Rivera en esta sala son el producto final de ese mestizaje. Como mercader, entiendes que la riqueza de México hoy reside en esa mezcla única que tú mismo ayudaste a transportar en tus barcos siglos atrás.`, p: `Busca en las pinturas algún elemento que te recuerde a la riqueza del ´pasado (como el color de la tierra, el trabajo manual) y tómale una fotografía` },
-            { n: "Mar de Filipinas", d: `Proximamente`, p: `Proximamente` },
-            { n: "Estrecho de San Bernardino", d: `Proximamente`, p: `Proximamente` },
-            { n: "Puerto de Manila", d: `Proximamente`, p: `Proximamente` },
-        ]
+      "Artesano": [
+    { n: "Puerto de Manila", d: `Esta escultura fue encontrada en las inmediaciones de la Acrópolis de la ciudad de Xochicalco, Morelos. Se le llama “El creador”: un adulto arrodillado sobre su pierna, barbado y con colmillos de jaguar, porta un tocado con el símbolo del año y también orejeras.`, p: `Toma una foto, ¿Cuál es la pieza de la que se habla en la descripción?` },
+    { n: "Estrecho de San Bernardino", d: `Autor no identificado: El biombo de la conquista de México, finales del siglo XVII. Óleo sobre tela y madera dorada de la Colección Museo Nacional de Historia, Castillo de Chapultepec, Secretaría de Cultura-INAH.`, p: `Observa con atención el biombo, en él busca un detalle que represente las técnicas o atención al detalle del artesano que lo fabricó y tómale una foto.` },
+    { n: "Mar de Filipinas", d: `El molave es un árbol nativo del sudeste asiático, cuya madera densa y duradera fue utilizada tanto en la construcción de casas e iglesias como en los galeones que atravesaban el océano Pacífico.`, p: `De acuerdo a la descripción, busca en la sala la pieza que describe y toma una foto.` },
+    { n: "Islas Marianas (Guam)", d: `Durante más de 250 años, los galeones zarparon una vez al año. Una pieza artesanal no se consideraba terminada hasta sobrevivir la travesía. Muchas obras se perdían por malas técnicas de embalaje o por no considerar el movimiento del barco, lo que obligó a los artesanos a pensar no solo en la estética, sino en la resistencia física del objeto.`, p: `Toma una foto que represente la mercancía con mayor resistencia.` },
+    { n: "Pacífico Norte", d: `Desde el siglo XVI, la plata extraída en minas como Zacatecas, Taxco y San Luis Potosí circuló por Asia en forma del peso de ocho reales. Esta moneda se volvió tan confiable que incluso fue aceptada en China. Su abundancia impulsó la demanda de objetos artesanales lujosos, altamente decorados, destinados a una élite capaz de pagar con plata.`, p: `Toma una foto que represente el objeto más valioso de la sala.` },
+    { n: "Corriente de Kuroshio", d: `En la plaza mayor de la Ciudad de México existió primero el mercado El Baratillo, destruido por un incendio en 1692, lo que llevó a la construcción del Parián, un mercado permanente frente a la catedral, terminado en 1703 y ampliado hasta 1720.`, p: `Toma una foto en la pintura que retrata tu oficio como artesano.` },
+    { n: "Meridiano 180", d: `China envió grandes cantidades de porcelana a Nueva España en los galeones de Manila. Las primeras piezas llegaron durante la dinastía Ming (1368–1644) y, más tarde, la porcelana alcanzó su mayor esplendor artístico con la dinastía Qing (1644–1912).`, p: `Toma una foto de la pieza de mayor dificultad artística.` },
+    { n: "Alta Mar Central", d: `El cristianismo se difundió a través del Galeón de Manila mediante imágenes religiosas producidas y comercializadas en serie. Porcelanas chinas y bordados filipinos se usaron para decorar altares. El marfil fue tallado por artesanos chinos en Manila (sangleyes), creando el estilo hispano-filipino, inspirado en grabados flamencos. El estilo indo-portugués representó figuras cristianas con posturas similares a las de Buda.`, p: `Muéstranos un ejemplo de cómo utilizaste alguno de estos materiales o técnicas para crear arte sacro (religioso).` },
+    { n: "Zona de Albatros", d: `Estos guerreros conformaban una clase social privilegiada de guerreros de élite en el Japón antiguo y durante el periodo Edo o Tokugawa (1603-1868). “Edo” se refiere a Tokio, periodo en que se traslada la capital imperial de Kioto a esta ciudad. Su armadura estaba hecha de lámina de hierro y cuero laqueados, textil y detalles en bronce y oro.`, p: `Artesano, de acuerdo a la descripción menciona el nombre de estos guerreros y toma una foto a su armadura.` },
+    { n: "Costa de California", d: `En Filipinas las prendas nacionales, en el caso de las mujeres, se componían por blusa acompañada de un pañuelo sobre los hombros, y una falda larga; estas prendas se confeccionaban con el textil baro't saya.`, p: `Artesano, usa tu ojo refinado y toma una foto de la prenda que representa el uso de este textil (baro't saya).` },
+    { n: "Punta de Baja California", d: `Con la Independencia de México, los galeones fueron desapareciendo; entonces tu oficio, su nombre y peculiaridades evolucionaron. Ahora, querido artesano, es usted un pintor muralista. A lo largo de los casi trescientos años que duró la ruta, no solo se intercambiaron mercancías, sino también costumbres. Los viajeros del siglo XIX representaron lugares desde una perspectiva romántica e idealizada.`, p: `Identifica en la sala un artículo de artesanía que representa la mezcla cultural y la visión “romántica” de aquellos viajes del Galeón.` },
+    { n: "Mar de Cortés", d: `En el siglo XX, los movimientos de liberación en el sudeste asiático propiciaron que artistas de Filipinas, Indonesia y Malasia se enfrentaran a las convenciones. Victorio Edades, Carlos Botong y otros lanzaron manifiestos reivindicando sus raíces. Esta actitud desafiante, llamada “Tropical”, permitió el surgimiento de posibilidades creativas.`, p: `Identifica en la sala un artículo de artesanía que representa la mezcla cultural y la visión “romántica” de aquellos viajes del Galeón.` },
+    { n: "Cabo Corrientes", d: `Los artistas del sudeste asiático usaron el retrato para representarse de forma auténtica. Al incorporar símbolos y técnicas indígenas, expresaron identidad, solidaridad y pertenencia, dando forma a una visión de nación emergente como proyecto político y cultural compartido.`, p: `Toma una foto al retrato de esta sala que te haga sentir personificado y escribe el por qué.` },
+    { n: "Costa de Michoacán", d: `Apichatpong Weerasethakul, (Tailandia, 1970) es un director, productor y guionista de cine y artista visual tailandés. En su obra, la realidad, la fantasía, los sueños, las pesadillas y los fantasmas conviven en un mismo lugar que opera según sus propias reglas, y que trata de reflejar la vida tal y como la percibimos.`, p: `A través de tu profesión ¿De qué forma podrías retratar la vida como la conoces? ` },
+    { n: "Puerto de Acapulco", d: `¿Crees que en el futuro los mapas dejarán de ser solo herramientas técnicas para convertirse también en expresiones artísticas?`, p: `¿Qué papel tendrían entonces pintores, fotógrafos, escultores, etc., en su creación?` }
+],
+       "Cartógrafo": [
+    { n: "Puerto de Acapulco", d:`Miguel Covarrubias fue un pintor, caricaturista, antropólogo e historiador del arte mexicano. Realizó varios viajes a Bali, que culminaron en la guía de viaje por excelencia, Island of Bali, publicada en 1937, que contribuyó a la popularización de la isla como un destino turístico global. En 1940, Covarrubias creó una serie de murales para la Exposición Internacional del Golden Gate en San Francisco, que destacaban la riqueza y complejidad de la vida cultural a lo largo del Pacífico y desafiaban las representaciones exóticas. Impresos por el artista, son mostrados aquí.`, p: `Dentro de los mapas proyectados encuentra la brújula en alguno de los mapas; con ella guíate al punto cardinal de tu preferencia, toma una foto de tu hallazgo y escribe como pie de foto qué punto cardinal seguiste (Norte, Sur, Este u Oeste).` },
+    { n: "Costa de Michoacán", d:`El Códice Florentino no solo documenta aspectos culturales, sino también descripciones del territorio que ayudaron a la Corona a comprender su organización. Estas representaciones fueron un antecedente clave para el desarrollo de mapas que conectaban el centro de México con los puertos de Acapulco y Veracruz.`, p:`Encuentra el Biombo de la Conquista. Tómale una foto a tu detalle favorito y responde: Si este biombo fuera un 'mapa' de la ciudad, ¿qué edificio usarías como punto de referencia para no perderte?`},
+    { n: "Cabo Corrientes", d:`Relación con la Casa de Contratación: Los cartógrafos debían ser examinados y certificados por la Casa de Contratación en Sevilla para asegurar que poseían los conocimientos matemáticos necesarios.`, p:`Busca el libro “Voyage around the World de George Anson” y tómale una foto.`},
+    { n: "Mar de Cortés", d:`Los relojes de sol se usaban en la náutica como instrumentos para medir la hora y tomar medidas de latitud; es decir, para determinar qué tan al norte o sur se encontraban. Los relojes anulares medían el tiempo por la evolución de la altura del sol, solían ser portátiles y se ajustaban según la época del año. Este ejemplar tiene grabado "Orizaba", por lo que en algún momento del siglo XVIII se graduó para medir la hora local.`, p:`Busca el reloj solar que contenga el grabado “Orizaba” y toma una foto.`},
+    { n: "Punta de Baja California", d:`La Ciudad de México era el eje financiero de la ruta. Aquí, la plata mexicana (reales de a ocho) se convertía en la primera moneda global. Los mapas de los puertos (Acapulco y Veracruz) no estaban aislados: el cartógrafo debía conocer el camino terrestre que los unía para asegurar que la plata llegara a los barcos a tiempo.`, p:`Observa los cuadros de los puertos, ¿qué puerto consideras que cobra mayor importancia y por qué?`},
+    { n: "Costa de California", d:`El cuadro del Zócalo es un ejercicio de cartografía teórica. El autor utilizó descripciones para ubicar el Parián y los puestos, demostrando que en el siglo XVIII un mapa podía ser tan fiel como la información que se enviaba por barco, permitiendo que alguien en Europa “viera” la Ciudad de México.`, p:`Ubícate dentro de la pintura del Parián; ahora elige un punto de referencia desde el cual trazarías tu mapa y tómale una foto.`},
+    { n: "Zona de Albatros", d:`La porcelana, clasificada principalmente por su decoración, destaca los siguientes tipos: azul y blanco, polícroma, Dehua o Blanc de Chine, Imari, Café au lait, familia rosa y verde, heráldica y de decoración europea. Por lo general, se fabricaba en los grandes centros urbanos y se decoraba con esmaltes en ciudades costeras como Cantón.`, p:`Toma una foto a la pieza que consideras se puede usar como parte de un mapa.`},
+    { n: "Alta Mar Central", d:`El cristianismo, como religión dominante, viajaba en el Galeón. Las imágenes de Cristo, la Virgen, el Niño Dios y los Santos fueron reproducidas y comercializadas masivamente en diversos materiales que transmitían riqueza y sofisticación. Las porcelanas chinas y los bordados filipinos se utilizaban para embellecer los altares.`, p:`Considerando tu experiencia en dibujo y trazo, toma una foto del objeto en esta sala que consideres representa esas habilidades.`},
+    { n: "Meridiano 180", d:`A finales del siglo XVI, los intentos de evangelizar Japón generaron tensiones que culminaron en la crucifixión de 26 misioneros y conversos en Nagasaki en 1597. Entre ellos estaba Felipe de las Casas, joven criollo nacido en la Ciudad de México. Su muerte impactó a la sociedad novohispana y, tras su beatificación en 1627, Felipe de Jesús se convirtió en un símbolo religioso y en patrono de la Ciudad de México.`, p:`Toma una foto del mártir y patrono de la Ciudad de México, Felipe de Jesús.`},
+    { n: "Corriente de Kuroshio", d:`Palabras cotidianas como 'nagua' llegaron a Filipinas desde Nueva España. Este intercambio lingüístico evidencia el papel del territorio como un “puente” que conecta materiales y culturas a ambos lados del océano.`, p:`Si tuvieras la encomienda de llevar alguna de estas piezas a un noble novohispano, ¿cuál elegirías? Tómale una foto.`},
+    { n: "Pacífico Norte", d:`Con la Independencia de México, los galeones fueron desapareciendo; entonces, señor cartógrafo, su oficio evolucionó a Ingeniero Cartógrafo. El sistema terminó en 1815, justo cuando México buscaba su soberanía. Los mapas dejaron de ser "Secretos de Estado" de la Corona para convertirse en mapas de una nueva nación, transformando la cartografía militar en civil y artística.`, p:`Escribe una nota dirigida a los antiguos tripulantes del Galeón. Explícales que, aunque el Galeón ya no navega, la 'ruta' que trazaron sigue viva en el arte y en la identidad de la gente.`},
+    { n: "Islas Marianas (Guam)", d:`Como cartógrafo, en los murales de Rivera ves reflejada la confirmación de tu trabajo: México no es solo un destino, sino el eje central de un mapa global que tú ayudaste a definir y que el muralismo ahora celebra como identidad.`, p:`Toma una foto de algún elemento de la sala que te recuerde la importancia de la tierra y de los mapas.`},
+    { n: "Mar de Filipinas", d: `Miguel Covarrubias fue un artista y antropólogo mexicano que, tras viajar a Bali, publicó Island of Bali (1937), obra clave para difundir la isla a nivel mundial. En 1940 realizó murales para la exposición del Golden Gate que resaltaban la diversidad cultural del Pacífico y cuestionaban visiones exóticas.`, p: `Señala el mapa que consideres toma en cuenta no solo rutas y territorio, sino todo aquello que ha interconectado la ruta del Galeón Acapulco-Manila.` },
+    { n: "Estrecho de San Bernardino", d: `Apichatpong Weerasethakul, (Tailandia, 1970) es un director, productor y guionista de cine y artista visual tailandés. En su obra, la realidad, la fantasía, los sueños, las pesadillas y los fantasmas conviven en un mismo lugar que opera según sus propias reglas, y que trata de reflejar la vida tal y como la percibimos.`, p: `A través de tu profesión ¿De qué forma podrías retratar la vida como la conoces? ` },
+    { n: "Puerto de Manila", d: `Con la tecnología y el uso de la IA,`, p: `¿Crees que en el futuro los mapas los harán solo expertos o también personas comunes? ¿Cómo cambiaría eso la manera en que vemos y entendemos el mundo?` }
+],
+       "Comerciante": [
+    { n: "Puerto de Acapulco", d: `El cacao, de origen mexicano, fue un bien de gran valor: además de consumirse, funcionó como moneda en Mesoamérica. Las deidades asociadas a él representan su poder económico y su papel como uno de los primeros productos agrícolas exportados masivamente hacia las islas.`, p:`Busca la pieza que creas que tendría el valor más alto en el mercado de 'curiosidades' de la época. Toma una fotografía y escribe como pie de foto: 'Precio estimado:...'`  },
+    { n: "Costa de Michoacán", d: `El biombo como mercancía de lujo: Los biombos formaban parte de los objetos más codiciados por los sectores más ricos de la Nueva España. La pieza que tienes frente a ti pudo haber sido adquirida por un virrey o un comerciante acaudalado, mostrando cómo el arte también fue un negocio altamente rentable.`, p: `¿Cuál sería el método para resguardar el biombo que usarías si lo tuvieras que llevar al centro de la Ciudad de México para su venta?` },
+    { n: "Cabo Corrientes", d: `Las bitácoras que ves en la sala registraban legalmente los bienes de lujo autorizados para cruzar el océano, garantizando un comercio sin competencia ilegal.`, p: `¿Qué consideras que sería una “mercancía legal”?` },
+    { n: "Mar de Cortés", d: `El Plano Demostrativo, dedicado por su capitán Pedro Antonio de Cossío al virrey de Nueva España, documenta el durísimo viaje entre Cavite y Acapulco (1755–1756), que duró 204 días debido a calmas y temporales, causando grandes sufrimientos y numerosas muertes. Su esposa sobrevivió al trayecto.`, p: `Busca en el plano (manta) los días que tardó el viaje de este galeón y tómale una foto.` },
+    { n: "Punta de Baja California", d: `Carga límite (valor de mercancía): Existía un límite de carga llamada “permisión”. En diversas épocas, se permitió la exportación de 250,000 monedas desde Manila y el retorno de 500,000 monedas en plata desde Acapulco.`, p: `Identifica la moneda de ocho reales de 1804 y tómale una foto.` },
+    { n: "Costa de California", d: `El Parián era un mercado especializado en bienes de lujo. Surgido en Manila como espacio para el comercio chino, su modelo fue tan exitoso que se replicó en la Plaza Mayor de la Ciudad de México. Aquí se concentraba y controlaba la venta de seda, marfil y porcelana.`, p: `Toma una foto en la pintura de la plaza donde colocarías tu puesto.` },
+    { n: "Zona de Albatros", d: `Porcelana de importación: Las vajillas de porcelana china fueron uno de los productos más valiosos del comercio transpacífico. Las piezas que ves en la sala no son solo objetos artísticos: eran artículos de alto valor que generaban grandes ganancias al llegar a la Ciudad de México.`, p: `¿Cuáles son los principales colores de la porcelana que hay en la sala?` },
+    { n: "Alta Mar Central", d: `Las vajillas y objetos de porcelana china fueron mercancías clave para el consumo en la Nueva España. Una virgen de porcelana no era solo una imagen religiosa, sino un objeto de lujo elaborado con técnicas avanzadas de Asia, destinado a satisfacer el gusto de las élites novohispas.`, p: `¿Qué piezas le venderías a un sacerdote novohispano de las que hay en la sala?` },
+    { n: "Meridiano 180", d: `La misión diplomática del noble samurái Hasekura Tsunenaga, conocida como Embajada Keichō, fue una delegación japonesa enviada a la Nueva España por Date Masamune, daimyo de Sendai, entre 1613 y 1620.`, p: `Describe cuál era el objetivo principal de esta misión.` },
+    { n: "Corriente de Kuroshio", d: `El mercado del mestizaje cultural: La conquista de Filipinas dio origen a un intenso mestizaje cultural y social. Los trajes de los mestizos reflejan esta mezcla y revelan una nueva oportunidad comercial: prendas que combinan elegancia europea con materiales asiáticos.`, p: `¿En qué condiciones crees que se deberían transportar las prendas?` },
+    { n: "Pacífico Norte", d: `Con la Independencia de México, los galeones desaparecieron; ahora, comerciante, es usted un empresario. La presencia de Oriente es tangible en la pólvora de los fuegos artificiales, el papel picado que adorna nuestras fiestas y las peleas de gallos.`, p: `Identifica un elemento en la sala que represente este legado comercial en la actualidad.` },
+    { n: "Islas Marianas (Guam)", d: `En 1921, Siqueiros publica su manifiesto vinculado a las vanguardias. En paralelo, México vive la pacificación posrevolucionaria, donde la cultura y la educación se vuelven claves para reconstruir la nación y promover nuevos ideales de igualdad.`, p: `Busca en la sala una representación de este intercambio comercial/cultural y tómale una foto.` },
+    { n: "Mar de Filipinas", d: `La Biblioteca de los Trópicos reúne libros, películas y pinturas sobre Bali. Durante mucho tiempo retratada como paraíso tropical, Bali ocupa un lugar central en el arte del siglo XX. Miguel Covarrubias rastreó las afinidades entre este lugar y el sur de México.`, p: `De acuerdo a tu conocimiento de comerciante, ¿qué libros consideras que serían los más adecuados para distribuirse en México? Toma una foto.` },
+    { n: "Estrecho de San Bernardino", d: `Apichatpong Weerasethakul, (Tailandia, 1970) es un director, productor y guionista de cine y artista visual tailandés. En su obra, la realidad, la fantasía, los sueños, las pesadillas y los fantasmas conviven en un mismo lugar que opera según sus propias reglas, y que trata de reflejar la vida tal y como la percibimos. `, p: `A través de tu profesión ¿De qué forma podrías retratar la vida como la conoces?` },
+    { n: "Puerto de Manila", d: `Reflexión`, p: `Considerando el auge, la crisis y la reconfiguración de las rutas comerciales del Pacífico, ¿cómo imaginas que los comerciantes del futuro participarán en este intercambio global?` }
+]
     };
+function aplicarColorPorRango(numeroSala) {
+    const etiquetaSala = document.getElementById('sala-tag');
+    if (!etiquetaSala) return;
 
-    // --- 4. FUNCIONES DE INTERFAZ Y MAPA ---
- function accesoRol(rol) {
-        const pass = prompt(`Ingrese la contraseña de acceso para el perfil de ${rol}:`);
-        if (pass === LLAVES_ACCESO[rol]) {
-            rolActivo = rol;
-            salaActual = 1;
-            rutaActual = (rol === "Cartógrafo" || rol === "Comerciante") ? [...rutaBase].reverse() : [...rutaBase];
+    let colorRango;
 
-			viajeroID = "VIA-" + Math.floor(Math.random() * 9000 + 1000);
-            
-            document.getElementById('menu-roles').style.display = 'none';
-            document.getElementById('panel-datos').style.display = 'flex';
-            document.getElementById('rol-nombre').innerText = rol.toUpperCase();
-            
-            // Inyectamos el ID en el HTML
-            document.getElementById('id-viajero-display').innerText = viajeroID;
-            
-            setTimeout(initMap, 100);
-        } else { 
-            alert("Contraseña incorrecta. El Archivo Real permanece cerrado."); 
-        }
+    if (numeroSala >= 1 && numeroSala <= 3) {
+        colorRango = "#e84d10";
+    } else if (numeroSala >= 4 && numeroSala <= 10) {
+        colorRango = "#0047c2";
+    } else if (numeroSala >= 11 && numeroSala <= 15) {
+        colorRango = "#7000aa";
     }
 
-    function initMap() {
-        if (map) map.remove(); 
-        map = L.map('map', { zoomControl: false }).setView([20, 180], 3);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
-        document.getElementById('map').style.filter = "sepia(0.3) hue-rotate(185deg) brightness(0.9)";
-        
-        // Forzar redibujado para evitar pantalla azul
-        setTimeout(() => { map.invalidateSize(); }, 200);
-        renderPoint(1);
-    }
+        etiquetaSala.style.borderColor = colorRango;
+    etiquetaSala.style.color = colorRango;
+}
+function renderPoint(id, auto = false) {
+    const hito = rutaActual[id - 1];
+    const info = baseDeDatos[rolActivo][id - 1];
 
-  function renderPoint(id) {
-    const hito = rutaActual[id-1];
-    const info = baseDeDatos[rolActivo][id-1];
-    const marker = L.marker(hito.c).addTo(map);
+    if (!hito || !info) return;
+
     
+    if (typeof gtag === 'function') {
+        gtag('event', 'avance_sala', {
+            'numero_sala': id,
+            'nombre_hito': hito.n,
+            'rol_usuario': rolActivo
+        });
+    }
+
+    
+    map.eachLayer((layer) => {
+        if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+            map.removeLayer(layer);
+        }
+    });
+
+    // --- 3. CREAR MARCADOR ---
+    const marker = L.marker([hito.lat, hito.lng]).addTo(map);
+
+    // --- 4. EVENTO CLICK DEL MARCADOR ---
     marker.on('click', () => {
+        // APLICAR COLOR SEGÚN RANGO
+        aplicarColorPorRango(id); 
+
+        // Actualizar textos
         document.getElementById('nombre-hito').innerText = info.n;
         document.getElementById('info-dato').innerText = info.d;
         document.getElementById('info-pregunta').innerText = info.p;
-        document.getElementById('sala-tag').innerText = `Sala ${id}/15`;
+        document.getElementById('sala-tag').innerText = `SALA ${id}/15`;
 
-        // --- LÓGICA DEL CANDADO AQUÍ ---
+        // Mostrar zonas de interacción
+        const zonaEscritura = document.querySelector('.area-bitacora'); 
+        const zonaCarga = document.querySelector('.upload-container'); 
+        if(zonaEscritura) zonaEscritura.style.display = "block";
+        if(zonaCarga) zonaCarga.style.display = "block";
+
+        // Configurar botón de avance
         const btnNext = document.getElementById('btn-next');
         if (btnNext) {
-            btnNext.style.display = 'block'; // Lo mostramos
-            btnNext.disabled = true;        // 🔒 Lo bloqueamos
-            btnNext.innerText = "🔒 RESPONDE PARA AVANZAR"; // Texto de aviso
+            btnNext.style.display = 'block';
+            btnNext.disabled = true;
+            btnNext.innerText = "🔒 RESPONDE PARA AVANZAR";
+            btnNext.style.background = "#b2945d"; 
         }
 
-        // Limpiamos el texto de la bitácora anterior para que escriban de nuevo
         document.getElementById('texto-bitacora').value = "";
+
+        // Cámara
+        map.flyTo([hito.lat, hito.lng], 5, { animate: true, duration: 1.5 });
         
-        map.flyTo(hito.c, 4);
-        cargarComentarios(info.n);
+        if (window.cargarComentarios) cargarComentarios(info.n);
     });
 
+    
     if (id > 1) {
-        L.polyline([rutaActual[id-2].c, hito.c], { 
-            color: '#1b2631', 
-            weight: 3, 
-            dashArray: '8, 12', 
-            opacity: 0.6 
-        }).addTo(map);
+        const hitoAnterior = rutaActual[id - 2];
+        L.polyline(
+            [[hitoAnterior.lat, hitoAnterior.lng], [hito.lat, hito.lng]],
+            { color: '#1b2631', weight: 3, dashArray: '8, 12', opacity: 0.6 }
+        ).addTo(map);
     }
-}
-function siguienteSala() {
-    if (salaActual < 15) {
-        salaActual++;
-        renderPoint(salaActual);
-        // Al cambiar de sala, el botón se oculta hasta que el usuario responda la nueva pregunta
-        document.getElementById('btn-next').style.display = 'none';
-    } else {
-        // Si ya estamos en la 15 (salaActual === 15) y presionan el botón:
-        const pantallaFinal = document.getElementById('pantalla-final');
-        document.getElementById('final-rol').innerText = rolActivo;
-        document.getElementById('final-id').innerText = viajeroID;
-        pantallaFinal.style.display = 'block';
-        document.getElementById('panel-datos').style.display = 'none';
-    }
-}
 
-	// --- ACTIVAR BOTÓN TRAS CONTRASEÑA ---
+    // --- 6. AUTO-CLICK ---
+    if (auto) {
+        setTimeout(() => marker.fire('click'), 300);
+    }
+}
 function accesoRol(rol) {
-    const pass = prompt(`Ingrese la contraseña para ${rol}:`);
+    const pass = prompt(`Ingrese la contraseña de acceso para el perfil de ${rol}:`);
+    
     if (pass === LLAVES_ACCESO[rol]) {
-        rolActivo = rol; // Guardamos el oficio
+        // 1. Configuración de datos
+        rolActivo = rol;
         salaActual = 1;
         rutaActual = (rol === "Cartógrafo" || rol === "Comerciante") ? [...rutaBase].reverse() : [...rutaBase];
         
+        if (!viajeroID) {
+            viajeroID = "VIA-" + Math.floor(Math.random() * 9000 + 1000);
+        }
+
+        // 2. Interfaz: Mostrar panel y Textos de Bienvenida (Sala 0)
         document.getElementById('menu-roles').style.display = 'none';
         document.getElementById('panel-datos').style.display = 'flex';
-		document.getElementById('rol-nombre').innerText = rol.toUpperCase();
-            document.getElementById('id-viajero-display').innerText = viajeroID;
+document.getElementById('menu-roles').style.display = 'none';
+        document.getElementById('rol-nombre').innerText = rol.toUpperCase();
+        document.getElementById('id-viajero-display').innerText = viajeroID;
         
-        // MOSTRAR EL BOTÓN AZUL (Ahora sí)
-        const btn = document.getElementById('btn-bitacora-global');
-        if(btn) btn.style.display = 'block';
 
-        setTimeout(initMap, 100);
+        // Mensajes de Bienvenida
+        document.getElementById('nombre-hito').innerText = "¡BIENVENIDO, " + rol.toUpperCase() + "!";
+        document.getElementById('info-dato').innerText = "La travesía está a punto de comenzar. El mapa ha sido desplegado para mostrarte la ruta comercial.";
+        document.getElementById('info-pregunta').innerText = "INSTRUCCIÓN: Colóquese en el primer marcador que aparece en el mapa para iniciar la misión.";
+        document.getElementById('sala-tag').innerText = "Inicio de Misión";
+
+
+const logoMapa = document.getElementById('contenedor-logo-mapa');
+        if(logoMapa) logoMapa.style.display = 'block';
+        // OCULTAR INTERACCIÓN (Para que sea una Sala 0 limpia)
+        const zonaEscritura = document.querySelector('.area-bitacora'); 
+        const zonaCarga = document.querySelector('.upload-container'); 
+        if(zonaEscritura) zonaEscritura.style.display = 'none';
+        if(zonaCarga) zonaCarga.style.display = 'none';
+
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) btnNext.style.display = 'none';
+
+        if(document.getElementById('btn-bitacora-global')) {
+            document.getElementById('btn-bitacora-global').style.display = 'block';
+        }
+
+        // 3. Inicializar Mapa
+        initMap();
+
+        setTimeout(() => {
+            // Buscamos el primer punto de la ruta (Manila o Acapulco)
+            const primerHito = rutaActual[0];
+
+            if (map && primerHito) {
+                // AGREGAR EL MARCADOR INICIAL (Para que el usuario tenga dónde clickear)
+                const markerInicio = L.marker([primerHito.lat, primerHito.lng]).addTo(map);
+                
+                // Hacemos que este marcador también dispare el renderPoint al tocarlo
+                markerInicio.on('click', () => {
+                    renderPoint(1); 
+                });
+
+                console.log("Posicionando en origen para " + rol + ":", primerHito.n);
+                
+                // Volamos al punto inicial
+                map.flyTo([primerHito.lat, primerHito.lng], 5, {
+                    animate: true,
+                    duration: 2.5
+                });
+            }
+        }, 600);
+
     } else {
-        alert("Contraseña incorrecta.");
+        alert("Contraseña incorrecta. El Archivo Real permanece cerrado.");
     }
 }
+function initMap() {
+    // Limpiamos si ya existe
+    if (map && map.remove) {
+        map.remove();
+    }
+    
+    // Vista inicial oceánica
+    map = L.map('map', { 
+        zoomControl: false,
+        worldCopyJump: true 
+    }).setView([20, 0], 2);
+    
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+    
+    // Tu efecto estético
+    document.getElementById('map').style.filter = "sepia(0.3) hue-rotate(185deg) brightness(0.9)";
+    
+    // Ajuste técnico de tamaño
+    setTimeout(() => { map.invalidateSize(); }, 400);
+    
+    // NOTA: Aquí ya no hay renderPoint(1), por eso ya no sale el cuadro vacío.
+}
+// --- 1. FUNCIÓN PARA ENVIAR REPORTE (VALIDACIÓN FLEXIBLE Y IPHONE) ---
+async function enviarReporte() {
+    const textoElement = document.getElementById('texto-bitacora');
+    const texto = textoElement ? textoElement.value : "";
 
-// --- ABRIR GALERÍA PROPIA DEL DATO/OFICIO ---
+    // Lógica de "Salto de Sala" (Código secreto)
+    if (texto.trim().toUpperCase() === "KNAAN") {
+        salaActual = 15; 
+        renderPoint(salaActual, true); // El 'true' activa el movimiento automático
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) {
+            btnNext.disabled = false;
+            btnNext.style.display = "block";
+            btnNext.innerText = "📜 FINALIZAR TRAVESÍA";
+            btnNext.style.background = "#78281f";
+        }
+        if (textoElement) textoElement.value = ""; 
+        return; 
+    }
+
+    const inputArchivo = document.getElementById('archivo-oculto');
+    const archivoOriginal = inputArchivo ? inputArchivo.files[0] : null;
+    const hitoNombre = baseDeDatos[rolActivo][salaActual - 1].n;
+
+    if (!texto.trim() && !archivoOriginal) {
+        alert("Navegante, debes escribir un hallazgo o adjuntar una evidencia para sellar el reporte.");
+        return;
+    }
+
+    // --- CAMBIO ESTRATÉGICO: Mostrar estado de carga inmediato ---
+    const btnSellar = document.querySelector('button[onclick="enviarReporte()"]');
+    if (btnSellar) {
+        btnSellar.disabled = true;
+        btnSellar.innerText = "⌛ PROCESANDO EVIDENCIA...";
+    }
+
+    let payload = {
+        idVisitante: viajeroID,
+        rol: rolActivo,
+        punto: hitoNombre,
+        texto: texto,
+        archivoB64: null,
+        tipoMime: "image/jpeg", // Forzamos JPEG para máxima compatibilidad
+        nombreArchivo: archivoOriginal ? "foto_" + Date.now() + ".jpg" : null
+    };
+
+    if (archivoOriginal) {
+        try {
+            // --- COMPRESIÓN DE IMAGEN ON-THE-FLY ---
+            // Esto reduce una foto de 10MB a unos 300KB en milisegundos
+            payload.archivoB64 = await comprimirImagen(archivoOriginal);
+        } catch (error) {
+            console.error("Error comprimiendo:", error);
+            alert("La imagen es muy pesada. Intenta con otra o solo con texto.");
+            if (btnSellar) {
+                btnSellar.disabled = false;
+                btnSellar.innerText = "SELLAR REPORTE";
+            }
+            return;
+        }
+    }
+
+    // Enviamos el payload ya ligero
+    enviarFetch(payload);
+}
+
+// --- FUNCIÓN AUXILIAR DE COMPRESIÓN (Añádela a tu script) ---
+function comprimirImagen(archivo) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 1000; // Suficiente para ver bien en el Dashboard
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_WIDTH) {
+                        width *= MAX_WIDTH / height;
+                        height = MAX_WIDTH;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // 0.7 es la calidad (70%). Reduce el peso drásticamente sin perder detalle visual.
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                resolve(dataUrl);
+            };
+            img.onerror = reject;
+        };
+        reader.onerror = reject;
+    });
+}
+
+
 function abrirBitacoraCompartida() {
     const modal = document.getElementById('modal-bitacora');
     const lista = document.getElementById('lista-comentarios-modal');
-    const hitoActual = document.getElementById('nombre-hito').innerText;
+    const hitoElement = document.getElementById('nombre-hito');
+    const hitoActual = hitoElement ? hitoElement.innerText : "";
 
     if (!hitoActual || hitoActual === "Hito") return alert("Selecciona un punto primero.");
 
@@ -487,7 +730,7 @@ function abrirBitacoraCompartida() {
     fetch(APPS_SCRIPT_URL)
     .then(res => res.json())
     .then(data => {
-        // FILTRADO DOBLE: Por el Punto Y por el Rol (Oficio)
+        // Filtramos por Punto y Rol
         const filtrados = data.filter(d => d.punto === hitoActual && d.rol === rolActivo);
         
         if (filtrados.length === 0) {
@@ -495,23 +738,100 @@ function abrirBitacoraCompartida() {
             return;
         }
 
+       
         lista.innerHTML = filtrados.map(d => `
-            <div class="comentario-item" style="background:white; padding:15px; border-radius:10px; margin-bottom:15px; border-left: 5px solid #5dade2;">
-                <small style="color:#7f8c8d;">ID: ${d.id}</small>
-                <p style="margin:8px 0;">${d.texto}</p>
+            <div class="comentario-item" style="background:white; padding:15px; border-radius:10px; margin-bottom:15px; border-left: 5px solid #5dade2; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <small style="color:#7f8c8d;">ID: ${d.id || 'Anónimo'}</small>
+                <p style="margin:8px 0; font-size: 1rem; color: #1b2631;">${d.texto || "<i style='color:gray;'>Sin comentario escrito</i>"}</p>
                 ${crearElementoMultimedia(d.archivo)}
             </div>
         `).join("");
     })
-    .catch(() => lista.innerHTML = "Error al conectar con el Archivo Real.");
+    .catch(err => {
+        console.error("Error al cargar:", err);
+        lista.innerHTML = "Error al conectar con el Archivo Real.";
+    });
+}
+
+
+function crearElementoMultimedia(url) {
+    if (!url || url === "" || url === "null" || url === "undefined") return "";
+
+    const link = url.toLowerCase();
+    
+    
+    const esAudio = link.includes("audio") || 
+                    link.endsWith(".m4a") || 
+                    link.endsWith(".mp3") || 
+                    link.endsWith(".wav") || 
+                    link.endsWith(".webm") ||
+                    link.includes("uc?export=download");
+
+    if (esAudio) {
+       
+        return `
+            <div style="margin-top:10px; background: #f4f7f7; padding: 12px; border-radius: 8px; border: 1px solid #d5dbdb;">
+                <p style="font-size:0.7rem; margin-bottom:8px; color: #78281f; font-weight: bold;">🎙️ EVIDENCIA SONORA</p>
+                <audio controls style="width: 100%; height: 35px;">
+                    <source src="${url}" type="audio/mp4">
+                    <source src="${url}" type="audio/mpeg">
+                    <source src="${url}" type="audio/webm">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        `;
+    } else {
+       
+        return `
+            <div style="margin-top:10px;">
+                <img src="${url}" 
+                     style="width:100%; border-radius:10px; border: 1px solid #b2945d; display: block;" 
+                     onerror="this.style.display='none';">
+            </div>
+        `;
+    }
 }
 
 function cerrarBitacora() {
-    document.getElementById('modal-bitacora').style.display = "none";
+    const modal = document.getElementById('modal-bitacora');
+    if(modal) modal.style.display = "none";
+}
+function cerrarBitacora() {
+    const modal = document.getElementById('modal-bitacora');
+    if(modal) modal.style.display = "none";
 }
 
+function crearElementoMultimedia(url) {
+    if (!url || url === "" || url === "null") return "";
 
-    // --- 5. SISTEMA DE COMENTARIOS Y APPS SCRIPT ---
+    const link = url.toLowerCase();
+
+    
+    if (link.includes("audio") || link.endsWith(".m4a") || link.endsWith(".mp3") || link.endsWith(".wav") || link.endsWith(".webm")) {
+        return `
+            <div style="margin-top:10px; background: #f8f9f9; padding: 10px; border-radius: 8px; border: 1px solid #d6dbdf;">
+                <p style="font-size:0.7rem; margin-bottom:5px; color: #78281f; font-weight: bold;">🎙️ EVIDENCIA DE AUDIO:</p>
+                <audio controls style="width: 100%; height: 35px;">
+                    <source src="${url}" type="audio/mp4">
+                    <source src="${url}" type="audio/mpeg">
+                    <source src="${url}" type="audio/webm">
+                    <source src="${url}" type="audio/wav">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        `;
+    } 
+    // Por defecto, tratar como IMAGEN
+    else {
+        return `
+            <div style="margin-top:10px;">
+                <img src="${url}" style="width:100%; border-radius:10px; border: 1px solid #b2945d;">
+            </div>
+        `;
+    }
+}
+
+    
    function cargarComentarios(punto) {
     const lista = document.getElementById('lista-comentarios');
     lista.innerHTML = "<em>Buscando en los archivos reales...</em>";
@@ -576,28 +896,36 @@ function cerrarBitacora() {
             </audio>
         </div>`;
 
-    // Si el nombre del archivo o la URL sugieren audio, mostramos el reproductor
     return (url.toLowerCase().match(/(audio|mp3|wav|m4a|ogg)/)) ? htmlAudio : htmlImagen;
 }
 
-    // --- 4. ENVÍO DE REPORTES ---
+    
     function actualizarStatusArchivo() {
         const file = document.getElementById('archivo-oculto').files[0];
         const status = document.getElementById('status-archivo');
-        if (file) { status.innerText = "📎 Listo para sellar: " + file.name; }
+        if (file) { status.innerText = `🔗 Listo para sellar (⚠️Fotografía unicamente la pieza, sin rotro de personas): ` + file.name; }
     }
 
-  // --- FUNCIÓN PARA AVANZAR O FINALIZAR ---
+  
 function siguienteSala() {
-    console.log("Clic en botón. Sala actual:", salaActual);
+    console.log("Avanzando a sala:", salaActual + 1);
 
     if (salaActual < 15) {
         salaActual++;
-        renderPoint(salaActual);
+        
+        // Guardamos el progreso por si falla la memoria (lo que configuramos antes)
+        localStorage.setItem('sala_guardada', salaActual);
+        localStorage.setItem('rol_guardado', rolActivo);
+
+        // --- LA CLAVE: Llamamos a renderPoint con 'true' para que se abra solo ---
+        renderPoint(salaActual, true);
+
+        // Ocultamos el botón para que no lo presionen dos veces antes de responder
         const btnNext = document.getElementById('btn-next');
         if (btnNext) btnNext.style.display = 'none';
+
     } else {
-        // Secuencia de fin de viaje
+        // Secuencia de fin de viaje (Sala 15)
         const pantallaFinal = document.getElementById('pantalla-final');
         const rDisplay = document.getElementById('final-rol');
         const iDisplay = document.getElementById('final-id');
@@ -605,18 +933,21 @@ function siguienteSala() {
         if (pantallaFinal && rDisplay && iDisplay) {
             rDisplay.innerText = rolActivo.toUpperCase();
             iDisplay.innerText = viajeroID;
-            pantallaFinal.style.display = 'flex'; // Usamos flex para centrar
+            pantallaFinal.style.display = 'flex';
             document.getElementById('panel-datos').style.display = 'none';
+            
+            // Limpiamos los datos del teléfono al terminar con éxito
+            localStorage.removeItem('rol_guardado');
+            localStorage.removeItem('sala_guardada');
         }
     }
 }
 
-// --- FUNCIÓN PARA ENVIAR REPORTE (CON ATAJO KNAAN) ---
 async function enviarReporte() {
     const textoElement = document.getElementById('texto-bitacora');
     const texto = textoElement ? textoElement.value : "";
 
-    // --- ATAJO DE DESARROLLADOR: KNAAN ---
+    // 1. Lógica de "Salto de Sala" (Código secreto KNAAN)
     if (texto.trim().toUpperCase() === "KNAAN") {
         salaActual = 15; 
         renderPoint(salaActual); 
@@ -631,13 +962,13 @@ async function enviarReporte() {
         return; 
     }
 
-    // --- FLUJO NORMAL ---
     const inputArchivo = document.getElementById('archivo-oculto');
     const archivo = inputArchivo ? inputArchivo.files[0] : null;
     const hitoNombre = baseDeDatos[rolActivo][salaActual - 1].n;
 
+    
     if (!texto.trim() && !archivo) {
-        alert("Navegante, debes escribir algo o adjuntar una evidencia.");
+        alert("Navegante, debes escribir un hallazgo o adjuntar una evidencia para sellar el reporte.");
         return;
     }
 
@@ -657,41 +988,58 @@ async function enviarReporte() {
             reader.onload = (e) => resolve(e.target.result);
             reader.readAsDataURL(archivo);
         });
+        
         payload.archivoB64 = await base64Promise;
-        payload.tipoMime = archivo.type;
-        payload.nombreArchivo = archivo.name;
+        
+        let mime = archivo.type;
+        let nombreOriginal = archivo.name;
+
+        // Detectamos si es audio por tipo o por extensión (iPhone)
+        if ((mime && mime.includes("audio")) || nombreOriginal.toLowerCase().endsWith('.m4a') || nombreOriginal.toLowerCase().endsWith('.mp3')) {
+            // TRUCO: Le ponemos el prefijo "AUDIO_" al nombre para que sea imposible de ignorar
+            nombreOriginal = "AUDIO_" + nombreOriginal;
+            if (!mime) mime = "audio/mp4"; 
+        }
+        
+        payload.tipoMime = mime;
+        payload.nombreArchivo = nombreOriginal;
     }
 
+    // Enviamos al servidor
     enviarFetch(payload);
 }
 
- function enviarFetch(payload) {
+function enviarFetch(payload) {
+    const overlay = document.getElementById('loading-overlay');
+    const btnNext = document.getElementById('btn-next');
+    
+    // Mostramos el bloqueo total
+    if (overlay) overlay.style.display = 'flex';
+
     fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         body: JSON.stringify(payload)
     })
     .then(() => {
-        // 1. Notificación de éxito
+        // Ocultamos el bloqueo
+        if (overlay) overlay.style.display = 'none';
+
         alert("✅ Reporte sellado con éxito. El camino está despejado.");
 
-        // 2. DESBLOQUEO DEL BOTÓN CON LÓGICA DE CIERRE
-        const btnNext = document.getElementById('btn-next');
         if (btnNext) {
-            btnNext.disabled = false; // 🔓 Quita el bloqueo
-            btnNext.style.display = "block"; // Asegura que se vea
-
-            // Verificamos si es la última sala para cambiar el texto
+            btnNext.disabled = false;
             if (salaActual === 15) {
                 btnNext.innerText = "📜 FINALIZAR TRAVESÍA";
-                btnNext.style.background = "#78281f"; // Color vino/distintivo para el final
+                btnNext.style.background = "#78281f";
             } else {
                 btnNext.innerText = "SIGUIENTE SALA →";
                 btnNext.style.background = "var(--oro)"; 
             }
+            btnNext.style.display = "block";
         }
 
-        // 3. Limpieza de los campos (Para la siguiente sala)
+        // Limpieza de campos
         document.getElementById('texto-bitacora').value = "";
         document.getElementById('archivo-oculto').value = "";
         if(document.getElementById('status-archivo')) {
@@ -699,9 +1047,32 @@ async function enviarReporte() {
         }
     })
     .catch(err => {
+        if (overlay) overlay.style.display = 'none';
         console.error(err);
         alert("Error de conexión. El Archivo Real no pudo recibir tu reporte.");
+        if (btnNext) {
+            btnNext.disabled = false;
+            btnNext.innerText = "REINTENTAR ENVÍO";
+        }
     });
 }
+function regresarAlMenuPrincipal() {
+    // 1. Borramos el progreso guardado en el teléfono
+    localStorage.removeItem('rol_guardado');
+    localStorage.removeItem('sala_guardada');
+    
+    // 2. Redirigimos al inicio para limpiar Analytics
+    window.location.href = window.location.pathname; 
+}
+// Escuchamos todas las interacciones posibles para saber que el usuario sigue ahí
+window.onload = resetearRelojInactividad;
+document.onmousemove = resetearRelojInactividad;
+document.onkeypress = resetearRelojInactividad;
+document.onclick = resetearRelojInactividad;
+document.ontouchstart = resetearRelojInactividad; // Crucial para los móviles (75% de tus usuarios)
+
 </script>
+
+
+
 
