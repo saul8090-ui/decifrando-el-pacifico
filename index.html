@@ -26,27 +26,32 @@
         --verde-sello: #1e8449;
     }
 
-    body, html { 
-        margin: 0; padding: 0; 
-        height: 100%; width: 100%; 
-        font-family: 'IM Fell DW Pica', serif; 
-        background: var(--azul-p); 
-        overflow: hidden; 
-    }
+  body, html { 
+    margin: 0; 
+    padding: 0; 
+    height: 100%; 
+    width: 100%; 
+    font-family: 'IM Fell DW Pica', serif; 
+    background: var(--pergamino); /* Cambiado de azul a pergamino */
+    overflow: hidden; 
+}
 
-        #menu-roles { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 12px; 
-        padding: 25px; 
-        height: 100vh; 
-        box-sizing: border-box; 
-        justify-content: center; 
-        background: radial-gradient(circle, #2e4053, #1b2631); 
-        position: absolute; 
-        width: 100%; 
-        z-index: 3000; 
-    }
+#menu-roles { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    gap: 12px; 
+    padding: 20px; 
+    height: 100vh; 
+    width: 100vw;
+    box-sizing: border-box; 
+    justify-content: center; 
+    background: radial-gradient(circle, #2e4053, #1b2631); 
+    position: fixed; /* Cambiado a fixed para cubrir todo */
+    top: 0;
+    left: 0;
+    z-index: 9999; /* Máxima prioridad sobre el mapa */
+}
 
     .tarjeta-rol { 
         background: var(--pergamino); 
@@ -208,9 +213,14 @@
 }
 </style>
 <body>
-    <button id="btn-bitacora-global" onclick="abrirBitacoraCompartida()" class="btn-bitacora-flotante" style="display: none;">
-        📜 BITÁCORA DEL GREMIO
-    </button>
+  
+<div id="modal-ayuda" style="display: none; position: fixed; z-index: 30000000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center;">
+    <div style="background: #fdf5e6; padding: 20px; border-radius: 15px; width: 85%; max-width: 400px; border: 3px double #b2945d; position: relative;">
+        <span onclick="document.getElementById('modal-ayuda').style.display='none'" style="position: absolute; right: 15px; top: 10px; cursor: pointer; font-size: 25px;">×</span>
+        <h3 id="titulo-ayuda" style="font-family: 'Pirata One'; color: #78281f; margin-top: 10px;">Inspiración del Gremio</h3>
+        <div id="lista-ayuda" style="max-height: 50vh; overflow-y: auto; margin-top: 15px;"></div>
+    </div>
+</div> 
 
     <div id="menu-roles" style="display: flex; flex-direction: column; align-items: center; overflow-y: auto; padding-top: 20px;">
         <div style="text-align: center; width: 100%; margin-top: 109px; margin-bottom: 0px; padding: 10px 0;">
@@ -244,12 +254,17 @@
                 <span id="id-viajero-display" class="id-tag"></span>
             </div>
 
-            <div class="card-historia">
-                <h3 id="nombre-hito">Hito</h3>
-                <p id="info-dato">Dato histórico...</p>
-                <p id="info-pregunta" class="pregunta-box">Pregunta didáctica...</p>
-            </div>
-
+<div class="card-historia">
+    <h3 id="nombre-hito">Hito</h3>
+    <p id="info-dato">Dato histórico...</p>
+    <p id="info-pregunta" class="pregunta-box">Pregunta didáctica...</p>
+  <div style="text-align: center; margin-top: 15px;">
+    <button id="btn-inspiracion" onclick="abrirAyudaGremio()" 
+            style="display: none; opacity: 0; background: var(--oro); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-family: 'IM Fell DW Pica'; cursor: pointer; font-size: 0.8rem; transition: opacity 1.5s ease-in-out;">
+        ❓ ¿Necesitas inspiración? Mira qué han hecho otros
+    </button>
+</div>
+</div>
             <button id="btn-next" class="btn-accion" onclick="siguienteSala()" style="display: none;">Siguiente Sala →</button>
 
             <div id="bitacora-container">
@@ -282,24 +297,34 @@
         </div>
     </div>
 
-    <div id="pantalla-final" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 20000000; justify-content: center; align-items: center; flex-direction: column;">
-        <div style="text-align: center; border: 5px double #b2945d; background: #fdf5e6; padding: 40px; border-radius: 15px; max-width: 90%; width: 500px; box-shadow: 0 0 50px rgba(178, 148, 93, 0.5);">
-            <h1 style="font-family: 'Pirata One', serif; font-size: 3rem; color: #78281f; margin-top: 0;">¡EXPEDICIÓN COMPLETADA!</h1>
-            <hr style="border: 1px solid #b2945d; width: 80%; margin: 20px auto;">
-            <p style="font-size: 1.2rem; line-height: 1.6; color: #1b2631;">
-                Honorable <span id="final-rol" style="font-weight: bold; color: #78281f;"></span>, <br><br>
-                Tus hallazgos han sido sellados en el <strong>Archivo del Pacífico</strong>. 
-                Gracias a tu pericia, la ruta permanece viva.
-            </p>
-            <div style="background: #eeeae0; padding: 15px; border-radius: 10px; margin: 25px 0; border: 1px dashed #78281f;">
-                <p style="margin: 0; font-size: 0.9rem; color: #555;">ID DE VIAJERO:</p>
-                <h2 id="final-id" style="margin: 5px 0; letter-spacing: 3px; color: #1b2631;"></h2>
-            </div>
-            <button onclick="location.reload()" style="background: #1b2631; color: white; padding: 15px 40px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: bold;">
-                INICIAR NUEVA TRAVESÍA
-            </button>
+  <div id="pantalla-final" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 20000000; justify-content: center; align-items: center; flex-direction: column;">
+    <div style="text-align: center; border: 5px double #b2945d; background: #fdf5e6; padding: 30px; border-radius: 15px; max-width: 90%; width: 500px; box-shadow: 0 0 50px rgba(178, 148, 93, 0.5); overflow-y: auto; max-height: 90vh;">
+        
+        <h1 style="font-family: 'Pirata One', serif; font-size: 2.5rem; color: #78281f; margin-top: 0;">¡EXPEDICIÓN COMPLETADA!</h1>
+        
+        <hr style="border: 1px solid #b2945d; width: 80%; margin: 15px auto;">
+        
+        <p style="font-size: 1.1rem; line-height: 1.5; color: #1b2631;">
+            Honorable <span id="final-rol" style="font-weight: bold; color: #78281f;"></span>, <br><br>
+            Tus hallazgos han sido sellados en el <strong>Archivo del Pacífico</strong>. 
+            Gracias a tu pericia, la ruta permanece viva.
+        </p>
+
+        <div style="background: #eeeae0; padding: 10px; border-radius: 10px; margin: 20px 0; border: 1px dashed #78281f;">
+            <p style="margin: 0; font-size: 0.8rem; color: #555;">ID DE VIAJERO:</p>
+            <h2 id="final-id" style="margin: 5px 0; letter-spacing: 3px; color: #1b2631; font-size: 1.2rem;"></h2>
         </div>
+
+        <button onclick="mostrarLegadoCompleto()" style="width: 100%; background: #1e8449; color: white; border: none; padding: 15px; border-radius: 5px; font-family: 'Pirata One'; font-size: 1.4rem; cursor: pointer; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            📜 ABRIR EL LEGADO DEL GREMIO
+        </button>
+
+        <button onclick="location.reload()" style="width: 100%; background: #1b2631; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; opacity: 0.8;">
+            INICIAR NUEVA TRAVESÍA
+        </button>
+        
     </div>
+</div>
 
     <div id="contenedor-logo-mapa" style="position: fixed; top: 20px; left: 20px; z-index: 5000; pointer-events: none; display: none;">
     <img src="https://www.sanildefonso.org.mx/expos/somospacifico/images/logo_txt.png" 
@@ -323,7 +348,7 @@
     let salaActual = 1;
     let rolActivo = "";
     let rutaActual = [];
-
+let timerInspiracion;
     const LLAVES_ACCESO = {
         "Comerciante": "Seda",
         "Cartógrafo": "Mapa",
@@ -408,7 +433,7 @@
        "Comerciante": [
     { n: "Puerto de Acapulco", d: `El cacao, de origen mexicano, fue un bien de gran valor: además de consumirse, funcionó como moneda en Mesoamérica. Las deidades asociadas a él representan su poder económico y su papel como uno de los primeros productos agrícolas exportados masivamente hacia las islas.`, p:`Busca la pieza que creas que tendría el valor más alto en el mercado de 'curiosidades' de la época. Toma una fotografía y escribe como pie de foto: 'Precio estimado:...'`  },
     { n: "Costa de Michoacán", d: `El biombo como mercancía de lujo: Los biombos formaban parte de los objetos más codiciados por los sectores más ricos de la Nueva España. La pieza que tienes frente a ti pudo haber sido adquirida por un virrey o un comerciante acaudalado, mostrando cómo el arte también fue un negocio altamente rentable.`, p: `¿Cuál sería el método para resguardar el biombo que usarías si lo tuvieras que llevar al centro de la Ciudad de México para su venta?` },
-    { n: "Cabo Corrientes", d: `Las bitácoras que ves en la sala registraban legalmente los bienes de lujo autorizados para cruzar el océano, garantizando un comercio sin competencia ilegal.`, p: `¿Qué consideras que sería una “mercancía legal”?` },
+    { n: "Cabo Corrientes", d: `Con la finalidad de evitar la ruta transpacífica y establecer el comercio directo entre Cádiz y Manila, a través del cabo de Buena Esperanza y el Océano Índico, se establece la Real Compañía de Filipinas mediante la Real Cédula de Carlos III en 1785.`, p: `Toma una foto a la Real Cédula de Erección de la Compañía de Filipinas` },
     { n: "Mar de Cortés", d: `El Plano Demostrativo, dedicado por su capitán Pedro Antonio de Cossío al virrey de Nueva España, documenta el durísimo viaje entre Cavite y Acapulco (1755–1756), que duró 204 días debido a calmas y temporales, causando grandes sufrimientos y numerosas muertes. Su esposa sobrevivió al trayecto.`, p: `Busca en el plano (manta) los días que tardó el viaje de este galeón y tómale una foto.` },
     { n: "Punta de Baja California", d: `Carga límite (valor de mercancía): Existía un límite de carga llamada “permisión”. En diversas épocas, se permitió la exportación de 250,000 monedas desde Manila y el retorno de 500,000 monedas en plata desde Acapulco.`, p: `Identifica la moneda de ocho reales de 1804 y tómale una foto.` },
     { n: "Costa de California", d: `El Parián era un mercado especializado en bienes de lujo. Surgido en Manila como espacio para el comercio chino, su modelo fue tan exitoso que se replicó en la Plaza Mayor de la Ciudad de México. Aquí se concentraba y controlaba la venta de seda, marfil y porcelana.`, p: `Toma una foto en la pintura de la plaza donde colocarías tu puesto.` },
@@ -456,7 +481,8 @@ function renderPoint(id, auto = false) {
     }
 
     
-    map.eachLayer((layer) => {
+  map.eachLayer((layer) => {
+        // Solo quitamos marcadores y líneas, dejamos el fondo del mapa intacto
         if (layer instanceof L.Marker || layer instanceof L.Polyline) {
             map.removeLayer(layer);
         }
@@ -512,7 +538,30 @@ function renderPoint(id, auto = false) {
     if (auto) {
         setTimeout(() => marker.fire('click'), 300);
     }
-}
+	// --- Lógica de Inspiración (30 segundos por sala) ---
+    const btnIns = document.getElementById('btn-inspiracion');
+    
+    // 1. Limpiamos cualquier cronómetro anterior para que no aparezca el de la sala pasada
+    if (timerInspiracion) clearTimeout(timerInspiracion);
+
+    if (btnIns) {
+        // 2. Ocultamos el botón inmediatamente al entrar a la nueva sala
+        btnIns.style.display = 'none';
+        btnIns.style.opacity = '0';
+
+        // 3. Iniciamos el cronómetro de 30 segundos (30,000 ms)
+        timerInspiracion = setTimeout(() => {
+            // Solo se muestra si el usuario sigue en la sala
+            btnIns.style.display = 'inline-block';
+            
+            // Animación de aparición suave
+            setTimeout(() => { 
+                btnIns.style.opacity = '1'; 
+            }, 100);
+            
+        }, 30000); // <-- Aquí configuramos los 30 segundos
+    }
+} // Aquí termina la función renderPoint
 function accesoRol(rol) {
     const pass = prompt(`Ingrese la contraseña de acceso para el perfil de ${rol}:`);
     
@@ -559,54 +608,51 @@ const logoMapa = document.getElementById('contenedor-logo-mapa');
         // 3. Inicializar Mapa
         initMap();
 
-        setTimeout(() => {
-            // Buscamos el primer punto de la ruta (Manila o Acapulco)
+       setTimeout(() => {
             const primerHito = rutaActual[0];
 
             if (map && primerHito) {
-                // AGREGAR EL MARCADOR INICIAL (Para que el usuario tenga dónde clickear)
                 const markerInicio = L.marker([primerHito.lat, primerHito.lng]).addTo(map);
                 
-                // Hacemos que este marcador también dispare el renderPoint al tocarlo
                 markerInicio.on('click', () => {
                     renderPoint(1); 
                 });
 
-                console.log("Posicionando en origen para " + rol + ":", primerHito.n);
-                
-                // Volamos al punto inicial
+                // Cambiamos flyTo por un movimiento más controlado o directo al inicio
                 map.flyTo([primerHito.lat, primerHito.lng], 5, {
                     animate: true,
-                    duration: 2.5
+                    duration: 1.5, // Más rápido para evitar que el renderizado se trabe
+                    easeLinearity: 0.5
                 });
             }
-        }, 600);
+        }, 800); // Aumentamos un poco el margen para que el menú desaparezca suavemente
 
     } else {
         alert("Contraseña incorrecta. El Archivo Real permanece cerrado.");
     }
 }
 function initMap() {
-    // Limpiamos si ya existe
     if (map && map.remove) {
         map.remove();
     }
     
-    // Vista inicial oceánica
+    // 1. Iniciamos el mapa en una posición neutral pero cercana al Pacífico
+    // 2. Desactivamos el zoom por inercia para ahorrar procesador
     map = L.map('map', { 
         zoomControl: false,
-        worldCopyJump: true 
-    }).setView([20, 0], 2);
+        worldCopyJump: true,
+        inertia: false // Evita cálculos extra de movimiento
+    }).setView([15, 120], 3); // Empezamos cerca de Manila
     
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        updateWhenIdle: true, // No carga texturas mientras te mueves
+        keepBuffer: 2        // Mantiene texturas listas para evitar parpadeos
+    }).addTo(map);
     
-    // Tu efecto estético
     document.getElementById('map').style.filter = "sepia(0.3) hue-rotate(185deg) brightness(0.9)";
     
-    // Ajuste técnico de tamaño
-    setTimeout(() => { map.invalidateSize(); }, 400);
-    
-    // NOTA: Aquí ya no hay renderPoint(1), por eso ya no sale el cuadro vacío.
+    // Ajuste técnico sin delay excesivo
+    setTimeout(() => { map.invalidateSize(); }, 100);
 }
 // --- 1. FUNCIÓN PARA ENVIAR REPORTE (VALIDACIÓN FLEXIBLE Y IPHONE) ---
 async function enviarReporte() {
@@ -757,39 +803,20 @@ function abrirBitacoraCompartida() {
 function crearElementoMultimedia(url) {
     if (!url || url === "" || url === "null" || url === "undefined") return "";
 
-    const link = url.toLowerCase();
-    
-    
-    const esAudio = link.includes("audio") || 
-                    link.endsWith(".m4a") || 
-                    link.endsWith(".mp3") || 
-                    link.endsWith(".wav") || 
-                    link.endsWith(".webm") ||
-                    link.includes("uc?export=download");
-
-    if (esAudio) {
-       
-        return `
-            <div style="margin-top:10px; background: #f4f7f7; padding: 12px; border-radius: 8px; border: 1px solid #d5dbdb;">
-                <p style="font-size:0.7rem; margin-bottom:8px; color: #78281f; font-weight: bold;">🎙️ EVIDENCIA SONORA</p>
-                <audio controls style="width: 100%; height: 35px;">
-                    <source src="${url}" type="audio/mp4">
-                    <source src="${url}" type="audio/mpeg">
-                    <source src="${url}" type="audio/webm">
-                    Tu navegador no soporta la reproducción de audio.
-                </audio>
-            </div>
-        `;
-    } else {
-       
-        return `
-            <div style="margin-top:10px;">
-                <img src="${url}" 
-                     style="width:100%; border-radius:10px; border: 1px solid #b2945d; display: block;" 
-                     onerror="this.style.display='none';">
-            </div>
-        `;
+    // Si es una URL de Google Drive, intentamos mostrar la miniatura
+    let src = url;
+    if (url.includes("drive.google.com")) {
+        const idDrive = url.split("id=")[1] || url.split("/d/")[1].split("/")[0];
+        src = `https://lh3.googleusercontent.com/u/0/d/${idDrive}`;
     }
+
+    return `
+        <div style="margin-top:10px;">
+            <img src="${src}" 
+                 style="width:100%; border-radius:10px; border: 1px solid #b2945d; display: block;" 
+                 onerror="this.parentElement.innerHTML='<p style=font-size:0.7rem;color:gray;>Evidencia guardada en archivo</p>';">
+        </div>
+    `;
 }
 
 function cerrarBitacora() {
@@ -801,37 +828,7 @@ function cerrarBitacora() {
     if(modal) modal.style.display = "none";
 }
 
-function crearElementoMultimedia(url) {
-    if (!url || url === "" || url === "null") return "";
 
-    const link = url.toLowerCase();
-
-    
-    if (link.includes("audio") || link.endsWith(".m4a") || link.endsWith(".mp3") || link.endsWith(".wav") || link.endsWith(".webm")) {
-        return `
-            <div style="margin-top:10px; background: #f8f9f9; padding: 10px; border-radius: 8px; border: 1px solid #d6dbdf;">
-                <p style="font-size:0.7rem; margin-bottom:5px; color: #78281f; font-weight: bold;">🎙️ EVIDENCIA DE AUDIO:</p>
-                <audio controls style="width: 100%; height: 35px;">
-                    <source src="${url}" type="audio/mp4">
-                    <source src="${url}" type="audio/mpeg">
-                    <source src="${url}" type="audio/webm">
-                    <source src="${url}" type="audio/wav">
-                    Tu navegador no soporta la reproducción de audio.
-                </audio>
-            </div>
-        `;
-    } 
-    // Por defecto, tratar como IMAGEN
-    else {
-        return `
-            <div style="margin-top:10px;">
-                <img src="${url}" style="width:100%; border-radius:10px; border: 1px solid #b2945d;">
-            </div>
-        `;
-    }
-}
-
-    
    function cargarComentarios(punto) {
     const lista = document.getElementById('lista-comentarios');
     lista.innerHTML = "<em>Buscando en los archivos reales...</em>";
@@ -863,42 +860,7 @@ function crearElementoMultimedia(url) {
     });
 }
 
-   function crearElementoMultimedia(url) {
-    // Si no hay URL o es el texto por defecto, no pongas nada
-    if (!url || url === "Sin archivo" || url.includes("Error") || url.trim() === "") return "";
-
-    // Extraer el ID de Google Drive del enlace
-    let idDrive = "";
-    if (url.includes("id=")) {
-        idDrive = url.split("id=")[1].split("&")[0];
-    } else if (url.includes("/d/")) {
-        idDrive = url.split("/d/")[1].split("/")[0];
-    }
-
-    if (!idDrive) return "";
-
-    // Link para visualización directa
-    const directUrl = `https://lh3.googleusercontent.com/d/${idDrive}`;
-
-    // PROTECCIÓN PARA IMAGEN
-    const htmlImagen = `
-        <div style="position:relative; user-select:none; margin-top:10px; border:1px solid #ddd; border-radius:8px; overflow:hidden;">
-            <img src="${directUrl}" style="width:100%; display:block;" oncontextmenu="return false;">
-            <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:transparent;"></div>
-        </div>`;
-
-    // PROTECCIÓN PARA AUDIO
-    const htmlAudio = `
-        <div style="margin-top:10px;">
-            <audio controls controlsList="nodownload" oncontextmenu="return false;" style="width:100%;">
-                <source src="https://docs.google.com/uc?export=download&id=${idDrive}" type="audio/mpeg">
-                Tu navegador no soporta este audio.
-            </audio>
-        </div>`;
-
-    return (url.toLowerCase().match(/(audio|mp3|wav|m4a|ogg)/)) ? htmlAudio : htmlImagen;
-}
-
+  
     
     function actualizarStatusArchivo() {
         const file = document.getElementById('archivo-oculto').files[0];
@@ -1071,8 +1033,97 @@ document.onkeypress = resetearRelojInactividad;
 document.onclick = resetearRelojInactividad;
 document.ontouchstart = resetearRelojInactividad; // Crucial para los móviles (75% de tus usuarios)
 
-</script>
+function abrirAyudaGremio() {
+    const modal = document.getElementById('modal-ayuda');
+    const lista = document.getElementById('lista-ayuda');
+    const hitoNombre = baseDeDatos[rolActivo][salaActual - 1].n;
 
+    modal.style.display = "flex";
+    lista.innerHTML = "<p style='text-align:center;'>Consultando archivos reales...</p>";
+
+    fetch(APPS_SCRIPT_URL)
+    .then(res => res.json())
+    .then(data => {
+        // Filtramos por sala y rol
+        const filtrados = data.filter(d => d.punto === hitoNombre && d.rol === rolActivo);
+        
+        if (filtrados.length === 0) {
+            lista.innerHTML = "<p style='text-align:center;'>Eres el primer explorador en esta zona. ¡Tu reporte será el ejemplo para otros!</p>";
+        } else {
+            // --- CAMBIO CLAVE: .slice(-2) para mostrar solo las últimas 2 ---
+            lista.innerHTML = filtrados.slice(-2).reverse().map(d => `
+                <div style="margin-bottom:15px; border-bottom:1px solid #b2945d; padding-bottom:10px;">
+                    <p style="font-size:0.85rem; color:#78281f; margin-bottom:2px;"><b>Navegante Reconocido</b></p>
+                    <p style="font-size:0.95rem; margin:5px 0;">"${d.texto || 'Sin comentario'}"</p>
+                    ${d.archivo ? crearElementoMultimedia(d.archivo) : ''}
+                </div>
+            `).join("");
+            
+            // Añadimos un aviso sutil para generar expectativa del final
+            lista.innerHTML += `<p style="font-size:0.75rem; text-align:center; color:#555; margin-top:10px;">
+                Al finalizar tu travesía podrás consultar el Legado Real completo.</p>`;
+        }
+    })
+    .catch(() => {
+        lista.innerHTML = "El mar está agitado. No pudimos conectar con el Archivo.";
+    });
+}
+function mostrarLegadoCompleto() {
+    const modal = document.getElementById('modal-ayuda');
+    const lista = document.getElementById('lista-ayuda');
+    const titulo = document.getElementById('titulo-ayuda');
+
+    if(!modal || !lista) return;
+
+    // Cambiamos el título para el gran final
+    titulo.innerText = "EL LEGADO COMPLETO DEL GALEÓN";
+    modal.style.display = "flex";
+    lista.innerHTML = "<p style='text-align:center; padding:20px; color:#78281f;'>Desbloqueando todos los registros del Archivo Real...</p>";
+
+    fetch(APPS_SCRIPT_URL)
+    .then(res => res.json())
+   // ... dentro de fetch(APPS_SCRIPT_URL) ...
+.then(data => {
+    // 1. Filtramos por rol
+    let filtrados = data.filter(d => d.rol === rolActivo);
+
+    // 2. ORDENAMOS por sala (asumiendo que en tu base de datos el punto tiene el nombre de la sala)
+    // Este pequeño truco asegura que el viaje se lea de la Sala 1 a la 15
+    const ordenSalas = baseDeDatos[rolActivo].map(s => s.n);
+    filtrados.sort((a, b) => ordenSalas.indexOf(a.punto) - ordenSalas.indexOf(b.punto));
+
+    if (filtrados.length === 0) {
+        lista.innerHTML = "<p style='text-align:center;'>El archivo está vacío.</p>";
+    } else {
+        lista.innerHTML = filtrados.map(d => {
+            // Buscamos el número de sala para poner el sello
+            const numSala = ordenSalas.indexOf(d.punto) + 1;
+            
+            return `
+                <div style="margin-bottom:25px; border-left: 4px solid #b2945d; background: #fffaf0; padding: 15px; border-radius: 0 10px 10px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0d5c1; margin-bottom: 10px; padding-bottom: 5px;">
+                        <span style="font-family: 'Pirata One'; color: #78281f; font-size: 1.2rem;">📍 SALA ${numSala}</span>
+                        <span style="font-size: 0.7rem; color: #b2945d; font-weight: bold; text-transform: uppercase;">${d.punto}</span>
+                    </div>
+                    <p style="font-style: italic; color: #1b2631; margin: 10px 0;">"${d.texto || 'Sin mensaje'}"</p>
+                    ${crearElementoMultimedia(d.archivo)}
+                </div>
+            `;
+        }).join("");
+    }
+})
+    .catch(err => {
+        console.error("Error al cargar legado:", err);
+        lista.innerHTML = "<p style='text-align:center; padding:20px;'>Hubo un error al abrir el cofre de datos.</p>";
+    });
+}
+let temporizadorInactividad;
+function resetearRelojInactividad() {
+    clearTimeout(temporizadorInactividad);
+    // 30 minutos = 1,800,000 milisegundos
+    temporizadorInactividad = setTimeout(regresarAlMenuPrincipal, 1800000); 
+}
+</script>
 
 
 
